@@ -14,15 +14,15 @@ public:
     DNASequence();
 
     DNASequence(const char * cStringSequence);
-    DNASequence(const string& stringSequence);
+    DNASequence(const std::string& stringSequence);
 
     DNASequence(const DNASequence& dnaSequence);
     DNASequence& operator=(const DNASequence& dnaSequence);
 
     DNASequence& operator=(const char * cStringSequence);
-    DNASequence& operator=(const string& stringSequence);
+    DNASequence& operator=(const std::string& stringSequence);
 
-    friend ostream & operator<<(ostream & os, const DNASequence& dnaSequence);
+    friend std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence);
     friend bool operator==(const DNASequence& dnaSequence1, const DNASequence& dnaSequence2);
     friend bool operator!=(const DNASequence& dnaSequence1, const DNASequence& dnaSequence2);
 
