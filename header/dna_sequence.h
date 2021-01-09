@@ -26,8 +26,11 @@ public:
     friend bool operator==(const DNASequence& dnaSequence1, const DNASequence& dnaSequence2);
     friend bool operator!=(const DNASequence& dnaSequence1, const DNASequence& dnaSequence2);
 
-    Nucleotide& operator[](size_t index) const;
-    Codon& codonAt(size_t index) const;
+    Nucleotide& operator[](size_t index);
+
+    // might not be that useful for phase 2
+    // codons can start at any index
+    Codon& codonAt(size_t index);
 private:
 };
 
