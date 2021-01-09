@@ -6,7 +6,11 @@
 #define DNA_SEQUENCE_DNA_SEQUENCE_H
 
 #include <string>
-class Nucleotide;
+#include <vector>
+
+#include "nucleotide.h"
+#include "dna_sequence_exception.h"
+
 class Codon;
 
 class DNASequence {
@@ -32,6 +36,7 @@ public:
     // codons can start at any index
     Codon& codonAt(size_t index);
 private:
+    std::vector<Nucleotide> m_sequence;
 };
 
 #endif //DNA_SEQUENCE_DNA_SEQUENCE_H
