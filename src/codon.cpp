@@ -8,7 +8,10 @@
 #include "../header/codon.h"
 #include "../header/dna_sequence_exception.h"
 
-#include <iostream>
+// you can add GTG and TTG
+const std::vector<Codon> Codon::s_startingCodons = { "ATG" };
+const std::vector<Codon> Codon::s_endingCodons = { "TAG", "TAA" , "TGA" };
+
 Codon::Codon(const char* codon) {
     size_t index = 0;
     while(codon[index++] && index < Codon::s_codonSize);
@@ -68,6 +71,14 @@ Codon Codon::pair() const {
     return Codon(ss.str());
 }
 
+std::string Codon::asString() const {
+    std::stringstream ss;
+    for(auto it = m_codonSeq.begin(); it != m_codonSeq.end(); ++it)
+        ss << it->asCharacter();
+
+    return ss.str();
+}
+
 Nucleotide &Codon::operator[](size_t index) {
     return m_codonSeq[index];
 }
@@ -89,11 +100,30 @@ bool operator!=(const Codon& codon1, const Codon& codon2) {
 }
 
 bool Codon::isStartingCodon(const Codon &codon) {
-    return false;
+    return find(s_startingCodons.begin(), s_startingCodons.end(), codon) != s_startingCodons.end();
 }
 
 bool Codon::isEndingCodon(const Codon &codon) {
-    return false;
+    return find(s_endingCodons.begin(), s_endingCodons.end(), codon) != s_endingCodons.end();
+}
+
+Codon::CodonTypes Codon::typeOfCodon(const Codon& codon) {
+    static std::map<std::string, CodonTypes> codonToTypeMap;
+    for (auto it = s_startingCodons.begin(); it != s_startingCodons.end(); ++it) {
+        codonToTypeMap.emplace(std::pair<std::string, CodonTypes>(it->asString(), CodonTypes::startingCodon));
+        codonToTypeMap.emplace(std::pair<std::string, CodonTypes>(it->asString(), CodonTypes::pairOfStartingCodon));
+    }
+
+    for (auto it = s_endingCodons.begin(); it != s_endingCodons.end(); ++it) {
+        codonToTypeMap.emplace(std::pair<std::string, CodonTypes>(it->asString(), CodonTypes::endingCodon));
+        codonToTypeMap.emplace(std::pair<std::string, CodonTypes>(it->asString(), CodonTypes::pairOfEndingCodon));
+    }
+
+    std::string codonAsString = codon.asString();
+    if(codonToTypeMap.find(codonAsString) != codonToTypeMap.end())
+        return codonToTypeMap.at(codonAsString);
+
+    return CodonTypes::normalCodon;
 }
 
 bool Codon::isValidCodonSequence(const Codon &codon) {
