@@ -9,14 +9,10 @@
 #include <vector>
 
 #include "nucleotide.h"
-#include "dna_sequence_exception.h"
-
-class Codon;
+#include "codon.h"
 
 class DNASequence {
 public:
-    DNASequence();
-
     DNASequence(const char * cStringSequence);
     DNASequence(const std::string& stringSequence);
 
@@ -35,6 +31,34 @@ public:
     // might not be that useful for phase 2
     // codons can start at any index
     Codon& codonAt(size_t index);
+
+
+    class iterator {
+    public:
+        std::vector<Nucleotide>::iterator operator*() const;
+        std::vector<Nucleotide>::iterator operator->() const;
+
+    private:
+        std::vector<Nucleotide>::iterator m_sequenceIterator;
+    };
+
+    // might change the return value to bool
+    size_t writeToFile(std::string fileName) const;
+    size_t readFromFile(std::string fileName);
+
+    DNASequence slice(size_t start, size_t end);
+    DNASequence pairSequence() const;
+
+    // might be better to return an iterator!
+    iterator find(DNASequence subSequence) const;
+
+    size_t count(DNASequence subSequence) const;
+
+    std::vector<iterator> findAll(DNASequence subSequence) const;
+
+    iterator begin() const;
+    iterator end() const;
+
 private:
     std::vector<Nucleotide> m_sequence;
 };
