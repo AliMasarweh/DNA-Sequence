@@ -5,6 +5,7 @@
 #include <map>
 
 #include "../header/nucleotide.h"
+#include "../header/dna_sequence_exception.h"
 
 using namespace  std;
 
@@ -42,11 +43,16 @@ Nucleotide& Nucleotide::operator=(const Nucleotide& nucleotide) {
     return *this;
 }
 
+
 Nucleotide Nucleotide::pair() const {
     /*return (m_nucleotideChar=='A')*'T' + (m_nucleotideChar=='T')*'A'
             + (m_nucleotideChar=='C')*'G' + (m_nucleotideChar=='G')*'C';*/
 
     return Nucleotide::m_nucPairs[m_nucleotideChar];
+}
+
+char Nucleotide::asCharacter() const {
+    return m_nucleotideChar;
 }
 
 bool operator==(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2) {

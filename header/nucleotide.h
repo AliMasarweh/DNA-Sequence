@@ -6,7 +6,6 @@
 #define DNA_SEQUENCE_NUCLEOTIDE_H
 
 #include <map>
-#include "dna_sequence_exception.h"
 
 class Nucleotide {
 public:
@@ -17,6 +16,7 @@ public:
     Nucleotide& operator=(const Nucleotide& nucleotide);
 
     Nucleotide pair() const;
+    char asCharacter() const;
 
     friend bool operator==(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2);
     friend bool operator!=(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2);
