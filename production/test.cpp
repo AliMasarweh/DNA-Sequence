@@ -16,7 +16,8 @@ int main(int argc, char* argv[])
     return RUN_ALL_TESTS();
 }
 
-TEST(NecleotideBasicTests, InitTest) {
+// ******************************** Nucleotide Tests ********************************
+TEST(NucleotideBasicTests, InitTest) {
     Nucleotide nucleotideA('A'), nucleotideC('C'),
             nucleotideT('T'), nucleotideG('G');
 
@@ -24,7 +25,7 @@ TEST(NecleotideBasicTests, InitTest) {
     nucleotideA = 'A';
 }
 
-TEST(NecleotideBasicTests, InvalidNecleotideTest) {
+TEST(NucleotideBasicTests, InvalidNucleotideTest) {
     set<char> validNucleotide;
 
     validNucleotide.insert('A');
@@ -44,7 +45,7 @@ TEST(NecleotideBasicTests, InvalidNecleotideTest) {
     }
 }
 
-TEST(NecleotideBasicTests, PairTest) {
+TEST(NucleotideBasicTests, PairTest) {
     Nucleotide nucleotideA('A'), nucleotideC('C'),
             nucleotideT('T'), nucleotideG('G');
 
@@ -55,7 +56,7 @@ TEST(NecleotideBasicTests, PairTest) {
     ASSERT_TRUE(nucleotideG.pair() == nucleotideC);
 }
 
-TEST(NecleotideBasicTests, RationalOperatorsTest) {
+TEST(NucleotideBasicTests, RationalOperatorsTest) {
     Nucleotide nucleotideA('A'), nucleotideC('C'),
             nucleotideT('T'), nucleotideG('G');
 
@@ -65,6 +66,17 @@ TEST(NecleotideBasicTests, RationalOperatorsTest) {
     ASSERT_TRUE(nucleotideG == 'G');
 }
 
+TEST(NucleotideBasicTests, AsCharacterMethodTest) {
+    Nucleotide nucleotideA('A'), nucleotideC('C'),
+            nucleotideT('T'), nucleotideG('G');
+
+    ASSERT_TRUE(nucleotideA.asCharacter() == 'A');
+    ASSERT_TRUE(nucleotideT.asCharacter() == 'T');
+    ASSERT_TRUE(nucleotideC.asCharacter() == 'C');
+    ASSERT_TRUE(nucleotideG.asCharacter() == 'G');
+}
+
+// ******************************** Codon Tests ********************************
 TEST(CodonBasicTests, InitTest) {
     Codon codon("ATG");
 }
@@ -128,6 +140,26 @@ TEST(CodonBasicTests, RationalOperatorsTest) {
             ss << nucleotides[random() % numOfNucleotides];
 
         ASSERT_TRUE(Codon(ss.str()) == ss.str());
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(CodonBasicTests, AsStringMethodTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        ASSERT_TRUE(Codon(ss.str()).asString() == ss.str());
         ss.clear();
         ss.str("");
     }
