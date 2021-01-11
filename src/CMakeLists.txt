@@ -1,3 +1,3 @@
 include_directories(${MyProject_SOURCE_DIR}/header)
 
-add_library(SRC nucleotide.cpp)
+add_library(SRC nucleotide.cpp codon.cpp)
