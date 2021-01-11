@@ -8,6 +8,7 @@
 using namespace std;
 
 #include "../header/dna_sequence.h"
+#include "../header/dna_sequence_exception.h"
 
 int main(int argc, char* argv[])
 {
@@ -62,4 +63,72 @@ TEST(NecleotideBasicTests, RationalOperatorsTest) {
     ASSERT_TRUE(nucleotideT == 'T');
     ASSERT_TRUE(nucleotideC == 'C');
     ASSERT_TRUE(nucleotideG == 'G');
+}
+
+TEST(CodonBasicTests, InitTest) {
+    Codon codon("ATG");
+}
+
+TEST(CodonBasicTests, InvalidCodonTest) {
+    stringstream ss;
+    ss << "";
+    for (int i = 0; i < Codon::s_codonSize - 1; ++i) {
+        ASSERT_THROW(Codon(ss.str()), InvalidCodonLengthException);
+    }
+
+    ss << "AA";
+    ASSERT_THROW(Codon(ss.str()), InvalidCodonLengthException);
+}
+
+TEST(CodonBasicTests, PairTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+      'A', 'T', 'G', 'C'
+    };
+
+    map<char, char> nucPairs = {
+            {'A', 'T'},
+            {'T', 'A'},
+            {'C', 'G'},
+            {'G', 'C'}
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss, flipped_ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x) {
+            char c = nucleotides[random() % numOfNucleotides];
+            ss << c;
+            flipped_ss  << nucPairs[c];
+        }
+
+        ASSERT_TRUE(Codon(ss.str()).pair() == Codon(flipped_ss.str()));
+        ss.clear();
+        ss.str("");
+        flipped_ss.clear();
+        flipped_ss.str("");
+    }
+}
+
+
+TEST(CodonBasicTests, RationalOperatorsTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        ASSERT_TRUE(Codon(ss.str()) == ss.str());
+        ss.clear();
+        ss.str("");
+    }
 }
