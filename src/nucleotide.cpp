@@ -15,15 +15,29 @@ map<char, char> Nucleotide::m_nucPairs = {
         {'G', 'C'}
 };
 
-Nucleotide::Nucleotide(char c): m_nucleotideChar(c) {}
+const char Nucleotide::s_validNucleotide[Nucleotide::s_validNucleotideNum] = {
+            'A', 'T', 'C', 'G'
+};
+
+Nucleotide::Nucleotide(char c): m_nucleotideChar(c) {
+    if(!isValidNucleotide(*this))
+        throw InvalidNucleotideException();
+}
 Nucleotide::Nucleotide(const Nucleotide& nucleotide)
-                    :m_nucleotideChar(nucleotide.m_nucleotideChar) {}
+                    :m_nucleotideChar(nucleotide.m_nucleotideChar) {
+    if(!isValidNucleotide(*this))
+        throw InvalidNucleotideException();
+}
 
 Nucleotide& Nucleotide::operator=(char c) {
     m_nucleotideChar = c;
+
+    return *this;
 }
 Nucleotide& Nucleotide::operator=(const Nucleotide& nucleotide) {
     m_nucleotideChar = nucleotide.m_nucleotideChar;
+
+    return *this;
 }
 
 Nucleotide Nucleotide::pair() const {
@@ -38,4 +52,12 @@ bool operator==(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2) {
 }
 bool operator!=(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2) {
     return !(nucleotide1 == nucleotide2);
+}
+
+bool Nucleotide::isValidNucleotide(const Nucleotide& nucleotide) {
+    for (unsigned char i = 0; i < Nucleotide::s_validNucleotideNum; ++i)
+        if(nucleotide.m_nucleotideChar == Nucleotide::s_validNucleotide[i])
+            return true;
+
+    return false;
 }

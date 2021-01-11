@@ -25,3 +25,7 @@ TEST(NecleotideBasicTests, PairTest) {
     ASSERT_TRUE(necleotideC.pair() == necleotideG);
     ASSERT_TRUE(necleotideG.pair() == necleotideC);
 }
+
+TEST(NecleotideBasicTests, InvalidNecleotideTest) {
+    ASSERT_THROW(Nucleotide('x'), InvalidNucleotideException);
+}

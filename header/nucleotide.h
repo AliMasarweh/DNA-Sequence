@@ -21,9 +21,14 @@ public:
     friend bool operator==(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2);
     friend bool operator!=(const Nucleotide& nucleotide1, const Nucleotide& nucleotide2);
 
+    const static unsigned char s_validNucleotideNum = 4;
+
+    static bool isValidNucleotide(const Nucleotide& nucleotide);
+
 private:
     char m_nucleotideChar;
 
+    const static char s_validNucleotide[s_validNucleotideNum];
     static std::map<char, char> m_nucPairs;
 };
 
