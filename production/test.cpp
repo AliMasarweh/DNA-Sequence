@@ -164,3 +164,81 @@ TEST(CodonBasicTests, AsStringMethodTest) {
         ss.str("");
     }
 }
+
+// ******************************** DNA-Sequence Tests ********************************
+TEST(DNASequenceBasicTests, InitTest) {
+    DNASequence codon("ATG");
+}
+
+TEST(DNASequenceBasicTests, PairTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    map<char, char> nucPairs = {
+            {'A', 'T'},
+            {'T', 'A'},
+            {'C', 'G'},
+            {'G', 'C'}
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss, flipped_ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x) {
+            char c = nucleotides[random() % numOfNucleotides];
+            ss << c;
+            flipped_ss  << nucPairs[c];
+        }
+
+        ASSERT_TRUE(DNASequence(ss.str()).pair() == DNASequence(flipped_ss.str()));
+        ss.clear();
+        ss.str("");
+        flipped_ss.clear();
+        flipped_ss.str("");
+    }
+}
+
+
+TEST(DNASequenceBasicTests, RationalOperatorsTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        ASSERT_TRUE(DNASequence(ss.str()) == ss.str());
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(DNASequenceBasicTests, AsStringMethodTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        ASSERT_TRUE(DNASequence(ss.str()).asString() == ss.str());
+        ss.clear();
+        ss.str("");
+    }
+}

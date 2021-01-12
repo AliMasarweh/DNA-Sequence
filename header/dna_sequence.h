@@ -27,6 +27,8 @@ public:
     friend bool operator!=(const DNASequence& dnaSequence1, const DNASequence& dnaSequence2);
 
     Nucleotide& operator[](size_t index);
+    const Nucleotide& operator[](size_t index) const;
+    size_t length() const { return m_sequence.size(); }
 
     // might not be that useful for phase 2
     // codons can start at any index
@@ -63,8 +65,14 @@ public:
         std::vector<Nucleotide>& m_sequenceReference;
     };
 
-    iterator begin() const;
-    iterator end() const;
+    iterator begin();
+    iterator end();
+
+    DNASequence pair() const;
+    std::string asString() const;
+
+    iterator cbegin() const;
+    iterator cend() const;
 
     // might change the return value to bool
     size_t writeToFile(std::string fileName) const;
