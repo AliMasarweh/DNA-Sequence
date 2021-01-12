@@ -35,13 +35,32 @@ public:
 
     class iterator {
     public:
-        std::vector<Nucleotide>::iterator& operator*() const;
-        std::vector<Nucleotide>::iterator& operator->() const;
+        iterator(std::vector<Nucleotide>& m_sequence, size_t index);
+        const Nucleotide& operator*() const;
+        const Nucleotide* operator->() const;
 
+        iterator& operator++();
+        iterator operator++(int);
+        iterator& operator--();
+        iterator operator--(int);
+
+        friend void swap(iterator& lhs, iterator& rhs);
+
+        friend bool operator==(const iterator& iterator1, const iterator& iterator2);
         friend bool operator!=(const iterator& iterator1, const iterator& iterator2);
 
+        iterator& operator+=(size_t);
+        friend iterator operator+(const iterator&, size_t);
+        friend iterator operator+(size_t, const iterator&);
+        iterator& operator-=(size_t);
+        friend iterator operator-(const iterator&, size_t);
+        friend size_t operator-(iterator, iterator);
+
+        Nucleotide& operator[](size_t) const;
+
     private:
-        std::vector<Nucleotide>::iterator m_sequenceIterator;
+        size_t m_index;
+        std::vector<Nucleotide>& m_sequenceReference;
     };
 
     iterator begin() const;
@@ -60,9 +79,6 @@ public:
     size_t count(DNASequence subSequence) const;
 
     std::vector<iterator> findAll(DNASequence subSequence) const;
-
-    iterator begin() const;
-    iterator end() const;
 
 private:
     std::vector<Nucleotide> m_sequence;
