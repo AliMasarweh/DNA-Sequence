@@ -30,17 +30,22 @@ public:
 
     // might not be that useful for phase 2
     // codons can start at any index
-    Codon& codonAt(size_t index);
+    Codon codonAt(size_t index);
 
 
     class iterator {
     public:
-        std::vector<Nucleotide>::iterator operator*() const;
-        std::vector<Nucleotide>::iterator operator->() const;
+        std::vector<Nucleotide>::iterator& operator*() const;
+        std::vector<Nucleotide>::iterator& operator->() const;
+
+        friend bool operator!=(const iterator& iterator1, const iterator& iterator2);
 
     private:
         std::vector<Nucleotide>::iterator m_sequenceIterator;
     };
+
+    iterator begin() const;
+    iterator end() const;
 
     // might change the return value to bool
     size_t writeToFile(std::string fileName) const;
