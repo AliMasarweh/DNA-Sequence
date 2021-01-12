@@ -184,11 +184,11 @@ TEST(DNASequenceBasicTests, PairTest) {
             {'G', 'C'}
     };
 
-    size_t totalRandomTests = 1000;
+    size_t totalRandomTests = 1000, dnaMaxLen = 100;
     stringstream ss, flipped_ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < Codon::s_codonSize; ++x) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen; ++x) {
             char c = nucleotides[random() % numOfNucleotides];
             ss << c;
             flipped_ss  << nucPairs[c];
