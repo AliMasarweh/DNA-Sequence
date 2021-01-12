@@ -64,6 +64,13 @@ iterator DNASequence::end() {
     return  iterator(m_sequence, m_sequence.size());
 }
 
+const iterator DNASequence::cbegin() const {
+    return  iterator(m_sequence, 0);
+}
+const iterator DNASequence::cend() const {
+    return  iterator(m_sequence, m_sequence.size());
+}
+
 DNASequence DNASequence::pair() const {
     std::stringstream ss;
 
@@ -96,6 +103,9 @@ bool operator==(const DNASequence &dnaSequence1, const DNASequence &dnaSequence2
 
 iterator::iterator(std::vector<Nucleotide>& m_sequence, size_t index): m_sequenceReference(m_sequence),
                     m_index(index) {}
+
+iterator::iterator(const std::vector<Nucleotide>& m_sequence, size_t index)
+        : m_sequenceReference(const_cast<std::vector<Nucleotide>&>(m_sequence)), m_index(index) {}
 
 const Nucleotide &iterator::operator*() const { return m_sequenceReference[m_index]; }
 

@@ -38,12 +38,17 @@ public:
     class iterator {
     public:
         iterator(std::vector<Nucleotide>& m_sequence, size_t index);
+        iterator(const std::vector<Nucleotide>& m_sequence, size_t index);
+
         const Nucleotide& operator*() const;
         const Nucleotide* operator->() const;
 
         iterator& operator++();
+        const iterator& operator++() const;
         iterator operator++(int);
+
         iterator& operator--();
+        const iterator& operator--() const;
         iterator operator--(int);
 
         friend void swap(iterator& lhs, iterator& rhs);
@@ -61,7 +66,7 @@ public:
         Nucleotide& operator[](size_t) const;
 
     private:
-        size_t m_index;
+        mutable size_t m_index;
         std::vector<Nucleotide>& m_sequenceReference;
     };
 
@@ -71,8 +76,8 @@ public:
     DNASequence pair() const;
     std::string asString() const;
 
-    iterator cbegin() const;
-    iterator cend() const;
+    const iterator cbegin() const;
+    const iterator cend() const;
 
     // might change the return value to bool
     size_t writeToFile(std::string fileName) const;
