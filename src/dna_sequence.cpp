@@ -16,11 +16,9 @@ DNASequence::DNASequence(const std::string &stringSequence) {
 }
 
 DNASequence::DNASequence(const DNASequence &dnaSequence) {
-    /*for (auto it = dnaSequence.cbegin(); it != dnaSequence.cend(); ++it) {
+    for (auto it = dnaSequence.cBegin(); it != dnaSequence.cEnd(); ++it) {
         m_sequence.emplace_back(Nucleotide(*it));
-    }*/
-    for (size_t index = 0; index < dnaSequence.m_sequence.size(); ++index)
-        m_sequence.emplace_back(Nucleotide(dnaSequence.m_sequence[index]));
+    }
 }
 
 DNASequence &DNASequence::operator=(const DNASequence &dnaSequence) {
@@ -64,10 +62,10 @@ iterator DNASequence::end() {
     return  iterator(m_sequence, m_sequence.size());
 }
 
-const iterator DNASequence::cbegin() const {
+const iterator DNASequence::cBegin() const {
     return  iterator(m_sequence, 0);
 }
-const iterator DNASequence::cend() const {
+const iterator DNASequence::cEnd() const {
     return  iterator(m_sequence, m_sequence.size());
 }
 
@@ -100,47 +98,13 @@ bool operator==(const DNASequence &dnaSequence1, const DNASequence &dnaSequence2
     return true;
 }
 
-
-iterator::iterator(std::vector<Nucleotide>& m_sequence, size_t index): m_sequenceReference(m_sequence),
-                    m_index(index) {}
-
-iterator::iterator(const std::vector<Nucleotide>& m_sequence, size_t index)
-        : m_sequenceReference(const_cast<std::vector<Nucleotide>&>(m_sequence)), m_index(index) {}
-
-const Nucleotide &iterator::operator*() const { return m_sequenceReference[m_index]; }
-
-const Nucleotide *iterator::operator->() const { return &(m_sequenceReference[m_index]); }
-
-iterator &iterator::operator++() {
-    ++m_index;
-    return *this;
+bool operator!=(const DNASequence &dnaSequence1, const DNASequence &dnaSequence2) {
+    return !(dnaSequence1 == dnaSequence2);
 }
 
-iterator iterator::operator++(int) {
-    iterator it(m_sequenceReference, m_index++);
-    return it;
-}
+std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence) {
+    for (size_t i = 0; i < dnaSequence.m_sequence.size(); ++i)
+        os << dnaSequence.m_sequence[i].asCharacter();
 
-iterator &iterator::operator--() {
-    --m_index;
-    return *this;
-}
-
-iterator iterator::operator--(int) {
-    iterator it(m_sequenceReference, m_index--);
-    return it;
-}
-
-iterator &iterator::operator+=(size_t index) {
-    m_index += index;
-    return *this;
-}
-
-iterator &iterator::operator-=(size_t index) {
-    m_index -= index;
-    return *this;
-}
-
-Nucleotide &iterator::operator[](size_t) const {
-    return m_sequenceReference[m_index];
+    return os;
 }
