@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <cstring>
 #include "../header/dna_sequence.h"
 
 DNASequence::DNASequence(const char *cStringSequence) {
@@ -22,14 +23,52 @@ DNASequence::DNASequence(const DNASequence &dnaSequence) {
 }
 
 DNASequence &DNASequence::operator=(const DNASequence &dnaSequence) {
+    size_t index = 0;
+    auto it = dnaSequence.cBegin();
+    for (; it != dnaSequence.cEnd() && index < this->length(); ++it) {
+        m_sequence[index++] = *it;
+    }
+
+    // if we need more size than the current length
+    for (; it != dnaSequence.cEnd(); ++it, ++index) {
+        m_sequence.emplace_back(Nucleotide(*it));
+    }
+
+    //TODO: clear after length
+
     return *this;
 }
 
 DNASequence &DNASequence::operator=(const char *cStringSequence) {
+    size_t index = 0;
+    auto it = cStringSequence;
+    for (; *it != 0 && index < this->length(); ++it) {
+        m_sequence[index++] = *it;
+    }
+
+    // if we need more size than the current length
+    for (; *it != 0; ++it, ++index) {
+        m_sequence.emplace_back(Nucleotide(*it));
+    }
+
+    //TODO: clear after length
+
     return *this;
 }
 
 DNASequence &DNASequence::operator=(const std::string &stringSequence) {
+    size_t index = 0;
+    for (; index < stringSequence.length() && index < this->length(); ++index) {
+        m_sequence[index] = stringSequence[index];
+    }
+
+    // if we need more size than the current length
+    for (; index < stringSequence.length(); ++index) {
+        m_sequence.emplace_back( Nucleotide(stringSequence[index]) );
+    }
+
+    //TODO: clear after length
+
     return *this;
 }
 
@@ -42,7 +81,7 @@ const Nucleotide &DNASequence::operator[](size_t index) const {
 }
 
 Codon DNASequence::codonAt(size_t index) {
-    if(index >= m_sequence.size() - Codon::s_codonSize + 1);
+    if(index >= this->length() - Codon::s_codonSize + 1);
     std::stringstream ss;
 
     for (size_t i = 0; i < Codon::s_codonSize; ++i)
@@ -59,20 +98,20 @@ iterator DNASequence::begin() {
 }
 
 iterator DNASequence::end() {
-    return  iterator(m_sequence, m_sequence.size());
+    return  iterator(m_sequence, this->length());
 }
 
 const iterator DNASequence::cBegin() const {
     return  iterator(m_sequence, 0);
 }
 const iterator DNASequence::cEnd() const {
-    return  iterator(m_sequence, m_sequence.size());
+    return  iterator(m_sequence, this->length());
 }
 
 DNASequence DNASequence::pair() const {
     std::stringstream ss;
 
-    for (size_t i = 0; i < m_sequence.size(); ++i)
+    for (size_t i = 0; i < this->length(); ++i)
         ss << m_sequence[i].pair().asCharacter();
 
     return  DNASequence(ss.str());
@@ -81,7 +120,7 @@ DNASequence DNASequence::pair() const {
 std::string DNASequence::asString() const {
     std::stringstream ss;
 
-    for (size_t i = 0; i < m_sequence.size(); ++i)
+    for (size_t i = 0; i < this->length(); ++i)
         ss << m_sequence[i].asCharacter();
 
     return  ss.str();
@@ -103,8 +142,16 @@ bool operator!=(const DNASequence &dnaSequence1, const DNASequence &dnaSequence2
 }
 
 std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence) {
-    for (size_t i = 0; i < dnaSequence.m_sequence.size(); ++i)
+    for (size_t i = 0; i < dnaSequence.length(); ++i)
         os << dnaSequence.m_sequence[i].asCharacter();
 
     return os;
+}
+
+size_t DNASequence::writeToFile(std::string fileName) const {
+
+}
+
+size_t DNASequence::readFromFile(std::string fileName) {
+
 }
