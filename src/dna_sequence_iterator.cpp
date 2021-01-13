@@ -3,6 +3,7 @@
 //
 
 #include "../header/dna_sequence.h"
+#include "../header/dna_sequence_exception.h"
 
 using iterator=DNASequence::iterator;
 iterator::iterator(std::vector<Nucleotide>& m_sequence, size_t index): m_sequenceReference(m_sequence),
@@ -12,25 +13,25 @@ iterator::iterator(const std::vector<Nucleotide>& m_sequence, size_t index)
         : m_sequenceReference(const_cast<std::vector<Nucleotide>&>(m_sequence)), m_index(index) {}
 
 Nucleotide &iterator::operator*() {
-    if(m_index > m_sequenceReference.size()) { throw std::exception(); }
+    if(m_index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
     return m_sequenceReference[m_index];
 }
 
 const Nucleotide &iterator::operator*() const {
-    if(m_index > m_sequenceReference.size()) { throw std::exception(); }
+    if(m_index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
     return m_sequenceReference[m_index];
 }
 
 Nucleotide *iterator::operator->() {
-    if(m_index > m_sequenceReference.size()) { throw std::exception(); }
+    if(m_index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
     return &(m_sequenceReference[m_index]);
 }
 
 const Nucleotide *iterator::operator->() const {
-    if(m_index > m_sequenceReference.size()) { throw std::exception(); }
+    if(m_index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
     return &(m_sequenceReference[m_index]);
 }
@@ -136,13 +137,13 @@ size_t operator-(const iterator& it1, const iterator& it2) {
 }
 
 Nucleotide &iterator::operator[](size_t index) {
-    if(m_index + index > m_sequenceReference.size()) { throw std::exception(); }
+    if(m_index + index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
     return m_sequenceReference[m_index];
 }
 
 const Nucleotide &iterator::operator[](size_t index) const {
-    if(m_index + index > m_sequenceReference.size()) { throw std::exception(); }
+    if(m_index + index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
     return m_sequenceReference[m_index + index];
 }
