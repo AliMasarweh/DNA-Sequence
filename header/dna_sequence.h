@@ -34,50 +34,15 @@ public:
     // codons can start at any index
     Codon codonAt(size_t index);
 
-
-    class iterator {
-    public:
-        iterator(std::vector<Nucleotide>& m_sequence, size_t index);
-        iterator(const std::vector<Nucleotide>& m_sequence, size_t index);
-
-        const Nucleotide& operator*() const;
-        const Nucleotide* operator->() const;
-
-        iterator& operator++();
-        const iterator& operator++() const;
-        iterator operator++(int);
-
-        iterator& operator--();
-        const iterator& operator--() const;
-        iterator operator--(int);
-
-        friend void swap(iterator& lhs, iterator& rhs);
-
-        friend bool operator==(const iterator& iterator1, const iterator& iterator2);
-        friend bool operator!=(const iterator& iterator1, const iterator& iterator2);
-
-        iterator& operator+=(size_t);
-        friend iterator operator+(const iterator&, size_t);
-        friend iterator operator+(size_t, const iterator&);
-        iterator& operator-=(size_t);
-        friend iterator operator-(const iterator&, size_t);
-        friend size_t operator-(iterator, iterator);
-
-        Nucleotide& operator[](size_t) const;
-
-    private:
-        mutable size_t m_index;
-        std::vector<Nucleotide>& m_sequenceReference;
-    };
-
+    class iterator;
     iterator begin();
     iterator end();
 
     DNASequence pair() const;
     std::string asString() const;
 
-    const iterator cbegin() const;
-    const iterator cend() const;
+    const iterator cBegin() const;
+    const iterator cEnd() const;
 
     // might change the return value to bool
     size_t writeToFile(std::string fileName) const;
@@ -95,6 +60,54 @@ public:
 
 private:
     std::vector<Nucleotide> m_sequence;
+
+public:
+    class iterator {
+    public:
+        iterator(std::vector<Nucleotide>& m_sequence, size_t index);
+        iterator(const std::vector<Nucleotide>& m_sequence, size_t index);
+
+        Nucleotide& operator*();
+        const Nucleotide& operator*() const;
+        Nucleotide* operator->();
+        const Nucleotide* operator->() const;
+
+        iterator& operator++();
+        const iterator& operator++() const;
+        iterator operator++(int);
+        const iterator operator++(int) const;
+
+        iterator& operator--();
+        const iterator& operator--() const;
+        iterator operator--(int);
+        const iterator operator--(int) const;
+
+        friend void swap(iterator& lhs, iterator& rhs);
+
+        friend bool operator==(const iterator& iterator1, const iterator& iterator2);
+        friend bool operator!=(const iterator& iterator1, const iterator& iterator2);
+
+        iterator& operator+=(size_t);
+        const iterator& operator+=(size_t) const;
+
+        friend const iterator operator+(const iterator&, size_t);
+        friend iterator operator+(iterator&, size_t);
+
+        friend const iterator operator+(size_t, const iterator&);
+        friend iterator operator+(size_t, iterator&);
+
+        iterator& operator-=(size_t);
+        const iterator& operator-=(size_t) const;
+        friend const iterator operator-(const iterator&, size_t);
+        friend size_t operator-(const iterator&, const iterator&);
+
+        Nucleotide& operator[](size_t);
+        const Nucleotide& operator[](size_t) const;
+
+    private:
+        mutable size_t m_index;
+        std::vector<Nucleotide>& m_sequenceReference;
+    };
 };
 
 #endif //DNA_SEQUENCE_DNA_SEQUENCE_H
