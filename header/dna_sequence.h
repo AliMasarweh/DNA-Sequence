@@ -37,12 +37,11 @@ public:
     class iterator;
     iterator begin();
     iterator end();
+    const iterator cBegin() const;
+    const iterator cEnd() const;
 
     DNASequence pair() const;
     std::string asString() const;
-
-    const iterator cBegin() const;
-    const iterator cEnd() const;
 
     // might change the return value to bool
     size_t writeToFile(std::string fileName) const;
