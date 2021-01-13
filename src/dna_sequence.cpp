@@ -34,7 +34,7 @@ DNASequence &DNASequence::operator=(const DNASequence &dnaSequence) {
         m_sequence.emplace_back(Nucleotide(*it));
     }
 
-    //TODO: clear after length
+    m_sequence.erase(m_sequence.cbegin() + index, m_sequence.cend());
 
     return *this;
 }
@@ -51,7 +51,7 @@ DNASequence &DNASequence::operator=(const char *cStringSequence) {
         m_sequence.emplace_back(Nucleotide(*it));
     }
 
-    //TODO: clear after length
+    m_sequence.erase(m_sequence.cbegin() + index, m_sequence.cend());
 
     return *this;
 }
@@ -67,7 +67,7 @@ DNASequence &DNASequence::operator=(const std::string &stringSequence) {
         m_sequence.emplace_back( Nucleotide(stringSequence[index]) );
     }
 
-    //TODO: clear after length
+    m_sequence.erase(m_sequence.cbegin() + index, m_sequence.cend());
 
     return *this;
 }
