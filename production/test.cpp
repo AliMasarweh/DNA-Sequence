@@ -167,7 +167,11 @@ TEST(CodonBasicTests, AsStringMethodTest) {
 
 // ******************************** DNA-Sequence Tests ********************************
 TEST(DNASequenceBasicTests, InitTest) {
-    DNASequence codon("ATG");
+    DNASequence dnaSequence("ATG");
+
+    std::string str("AAA");
+    dnaSequence = str;
+    ASSERT_TRUE(dnaSequence == str);
 }
 
 TEST(DNASequenceBasicTests, PairTest) {
@@ -224,6 +228,46 @@ TEST(DNASequenceBasicTests, RationalOperatorsTest) {
 }
 
 TEST(DNASequenceBasicTests, AsStringMethodTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        ASSERT_TRUE(DNASequence(ss.str()).asString() == ss.str());
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(DNASequenceBasicTests, LengthTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        ASSERT_TRUE(DNASequence(ss.str()).asString() == ss.str());
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(DNASequenceBasicTests, BracketsOperatorTest) {
     srand((unsigned ) time(0));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
