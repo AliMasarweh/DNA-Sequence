@@ -24,4 +24,9 @@ public:
     const char * what () const throw ();
 };
 
+class IteratorOutOfBoundsException: public DNASequenceException {
+public:
+    const char * what () const throw ();
+};
+
 #endif //DNA_SEQUENCE_DNASEQUENCEEXCEPTION_H
