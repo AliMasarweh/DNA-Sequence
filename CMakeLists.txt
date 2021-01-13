@@ -8,6 +8,7 @@ add_subdirectory(header)
 add_subdirectory(production)
 
 add_executable(dna_sequence main.cpp)
+add_executable(quick_tests quick_tests.cpp)
 add_executable(test_production production/test.cpp)
 
 link_directories(${MyProject_SOURCE_DIR}/src/CMakeLists.txt)
