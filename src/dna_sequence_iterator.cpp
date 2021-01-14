@@ -129,7 +129,7 @@ const iterator &iterator::operator-=(size_t index) const {
 }
 
 const iterator operator-(const iterator& it, size_t index) {
-    return iterator(it.m_sequenceReference, it.m_index+index);
+    return iterator(it.m_sequenceReference, it.m_index-index);
 }
 
 size_t operator-(const iterator& it1, const iterator& it2) {

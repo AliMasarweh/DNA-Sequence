@@ -333,3 +333,65 @@ TEST(DNASequenceBasicTests, CodonAtMethodTest) {
         ss.str("");
     }
 }
+
+TEST(DNASequenceIteratorTests, BasicIteratorTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        const DNASequence dnaSequence(str);
+        DNASequence::iterator it = dnaSequence.begin();
+        ASSERT_TRUE(it+dnaSequence.length() == dnaSequence.end());
+        for (size_t i = 0; i < dnaSequence.length(); ++i) {
+            if(random()%2 >= 1)
+                ASSERT_TRUE(*(it++) == dnaSequence[i]);
+            else {
+                ASSERT_TRUE(*(it) == dnaSequence[i]);
+                ++it;
+            }
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        const DNASequence dnaSequence(str);
+        DNASequence::iterator it = dnaSequence.begin() + dnaSequence.length() - 1;
+        ASSERT_TRUE(it - (dnaSequence.length() - 1) == dnaSequence.begin());
+        size_t maxSize = -1;
+        for (size_t i = dnaSequence.length()-1; i != maxSize; --i) {
+            ASSERT_TRUE(it.m_index == i);
+            if(random()%2 >= 1)
+                ASSERT_TRUE(*(it--) == dnaSequence[i]);
+            else {
+                ASSERT_TRUE(*(it) == dnaSequence[i]);
+                --it;
+            }
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
