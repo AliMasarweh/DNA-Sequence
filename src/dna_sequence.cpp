@@ -101,6 +101,14 @@ iterator DNASequence::end() {
     return  iterator(m_sequence, this->length());
 }
 
+const iterator DNASequence::begin() const {
+    return  iterator(m_sequence, 0);
+}
+
+const iterator DNASequence::end() const {
+    return  iterator(m_sequence, this->length());
+}
+
 const iterator DNASequence::cBegin() const {
     return  iterator(m_sequence, 0);
 }

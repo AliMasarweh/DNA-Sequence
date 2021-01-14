@@ -37,6 +37,8 @@ public:
     class iterator;
     iterator begin();
     iterator end();
+    const iterator begin() const;
+    const iterator end() const;
     const iterator cBegin() const;
     const iterator cEnd() const;
 
