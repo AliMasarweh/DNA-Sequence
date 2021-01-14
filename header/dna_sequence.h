@@ -35,12 +35,13 @@ public:
     Codon codonAt(size_t index);
 
     class iterator;
+    class ConstIterator;
     iterator begin();
     iterator end();
-    const iterator begin() const;
-    const iterator end() const;
-    const iterator cBegin() const;
-    const iterator cEnd() const;
+    const ConstIterator begin() const;
+    const ConstIterator end() const;
+    const ConstIterator cBegin() const;
+    const ConstIterator cEnd() const;
 
     DNASequence pair() const;
     std::string asString() const;
@@ -66,22 +67,15 @@ public:
     class iterator {
     public:
         iterator(std::vector<Nucleotide>& m_sequence, size_t index);
-        iterator(const std::vector<Nucleotide>& m_sequence, size_t index);
 
         Nucleotide& operator*();
-        const Nucleotide& operator*() const;
         Nucleotide* operator->();
-        const Nucleotide* operator->() const;
 
         iterator& operator++();
-        const iterator& operator++() const;
         iterator operator++(int);
-        const iterator operator++(int) const;
 
         iterator& operator--();
-        const iterator& operator--() const;
         iterator operator--(int);
-        const iterator operator--(int) const;
 
         friend void swap(iterator& lhs, iterator& rhs);
 
@@ -89,20 +83,49 @@ public:
         friend bool operator!=(const iterator& iterator1, const iterator& iterator2);
 
         iterator& operator+=(size_t);
-        const iterator& operator+=(size_t) const;
 
-        friend const iterator operator+(const iterator&, size_t);
-        friend iterator operator+(iterator&, size_t);
-
-        friend const iterator operator+(size_t, const iterator&);
-        friend iterator operator+(size_t, iterator&);
+        friend iterator operator+(const iterator&, size_t);
+        friend iterator operator+(size_t, const iterator&);
 
         iterator& operator-=(size_t);
-        const iterator& operator-=(size_t) const;
         friend const iterator operator-(const iterator&, size_t);
         friend size_t operator-(const iterator&, const iterator&);
 
         Nucleotide& operator[](size_t);
+
+    private:
+        size_t m_index;
+        std::vector<Nucleotide>& m_sequenceReference;
+    };
+
+    class ConstIterator {
+    public:
+        ConstIterator(const std::vector<Nucleotide>& m_sequence, size_t index);
+
+        const Nucleotide& operator*() const;
+        const Nucleotide* operator->() const;
+
+        const ConstIterator& operator++() const;
+        const ConstIterator operator++(int) const;
+
+        const ConstIterator& operator--() const;
+        const ConstIterator operator--(int) const;
+
+        friend void swap(ConstIterator& lhs, ConstIterator& rhs);
+
+        friend bool operator==(const ConstIterator& iterator1, const ConstIterator& iterator2);
+        friend bool operator!=(const ConstIterator& iterator1, const ConstIterator& iterator2);
+
+        const ConstIterator& operator+=(size_t) const;
+
+        friend const ConstIterator operator+(const ConstIterator&, size_t);
+
+        friend const ConstIterator operator+(size_t, const ConstIterator&);
+        friend ConstIterator operator+(size_t, ConstIterator&);
+
+        const ConstIterator& operator-=(size_t) const;
+        friend const ConstIterator operator-(const ConstIterator&, size_t);
+
         const Nucleotide& operator[](size_t) const;
 
     private:

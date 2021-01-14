@@ -92,6 +92,7 @@ Codon DNASequence::codonAt(size_t index) {
 
 
 using iterator=DNASequence::iterator;
+using CItertor=DNASequence::ConstIterator;
 
 iterator DNASequence::begin() {
     return  iterator(m_sequence, 0);
@@ -101,19 +102,19 @@ iterator DNASequence::end() {
     return  iterator(m_sequence, this->length());
 }
 
-const iterator DNASequence::begin() const {
-    return  iterator(m_sequence, 0);
+const CItertor DNASequence::begin() const {
+    return  CItertor(m_sequence, 0);
 }
 
-const iterator DNASequence::end() const {
-    return  iterator(m_sequence, this->length());
+const CItertor DNASequence::end() const {
+    return  CItertor(m_sequence, this->length());
 }
 
-const iterator DNASequence::cBegin() const {
-    return  iterator(m_sequence, 0);
+const CItertor DNASequence::cBegin() const {
+    return  CItertor(m_sequence, 0);
 }
-const iterator DNASequence::cEnd() const {
-    return  iterator(m_sequence, this->length());
+const CItertor DNASequence::cEnd() const {
+    return  CItertor(m_sequence, this->length());
 }
 
 DNASequence DNASequence::pair() const {

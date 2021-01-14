@@ -348,7 +348,7 @@ TEST(DNASequenceIteratorTests, BasicIteratorTest) {
         for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
         std::string str = ss.str();
-        const DNASequence dnaSequence(str);
+        DNASequence dnaSequence(str);
         DNASequence::iterator it = dnaSequence.begin();
         ASSERT_TRUE(it+dnaSequence.length() == dnaSequence.end());
         for (size_t i = 0; i < dnaSequence.length(); ++i) {
@@ -378,12 +378,11 @@ TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
         for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
         std::string str = ss.str();
-        const DNASequence dnaSequence(str);
-        DNASequence::iterator it = dnaSequence.begin() + dnaSequence.length() - 1;
+        DNASequence dnaSequence(str);
+        DNASequence::iterator it = dnaSequence.begin() + (dnaSequence.length() - 1);
         ASSERT_TRUE(it - (dnaSequence.length() - 1) == dnaSequence.begin());
         size_t maxSize = -1;
         for (size_t i = dnaSequence.length()-1; i != maxSize; --i) {
-            ASSERT_TRUE(it.m_index == i);
             if(random()%2 >= 1)
                 ASSERT_TRUE(*(it--) == dnaSequence[i]);
             else {
