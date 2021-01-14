@@ -43,6 +43,12 @@ CIterator CIterator::operator--(int) const{
     return it;
 }
 
+void swap(CIterator& lhs, CIterator& rhs) {
+    size_t index = lhs.m_index;
+    lhs.m_index = rhs.m_index;
+    rhs.m_index = index;
+}
+
 CIterator operator+(const CIterator& it, size_t index) {
     return CIterator(it.m_sequenceReference, it.m_index + index);
 }

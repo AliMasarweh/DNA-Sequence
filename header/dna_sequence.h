@@ -119,9 +119,7 @@ public:
         const ConstIterator& operator+=(size_t) const;
 
         friend ConstIterator operator+(const ConstIterator&, size_t);
-
         friend ConstIterator operator+(size_t, const ConstIterator&);
-        friend ConstIterator operator+(size_t, ConstIterator&);
 
         const ConstIterator& operator-=(size_t) const;
         friend ConstIterator operator-(const ConstIterator&, size_t);
