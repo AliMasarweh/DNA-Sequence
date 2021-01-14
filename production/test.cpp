@@ -205,11 +205,11 @@ TEST(DNASequenceBasicTests, PairTest) {
             {'G', 'C'}
     };
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 100;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
     stringstream ss, flipped_ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen; ++x) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x) {
             char c = nucleotides[random() % numOfNucleotides];
             ss << c;
             flipped_ss  << nucPairs[c];
@@ -231,11 +231,11 @@ TEST(DNASequenceBasicTests, RationalOperatorsTest) {
             'A', 'T', 'G', 'C'
     };
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 100;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen; ++x)
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
 
         ASSERT_TRUE(DNASequence(ss.str()) == ss.str());
@@ -251,11 +251,11 @@ TEST(DNASequenceBasicTests, AsStringMethodTest) {
             'A', 'T', 'G', 'C'
     };
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 100;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen; ++x)
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
 
         ASSERT_TRUE(DNASequence(ss.str()).asString() == ss.str());
@@ -271,11 +271,11 @@ TEST(DNASequenceBasicTests, LengthTest) {
             'A', 'T', 'G', 'C'
     };
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 100;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen; ++x)
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
 
         ASSERT_TRUE(DNASequence(ss.str()).length() == ss.str().length());
@@ -291,16 +291,44 @@ TEST(DNASequenceBasicTests, BracketsOperatorTest) {
             'A', 'T', 'G', 'C'
     };
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 100;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen; ++x)
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
         std::string str = ss.str();
         DNASequence dnaSequence(str);
         for (size_t i = 0; i < dnaSequence.length(); ++i)
             ASSERT_TRUE(dnaSequence[i] == str[i]);
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(DNASequenceBasicTests, CodonAtMethodTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 97;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + Codon::s_codonSize; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        DNASequence dnaSequence(str);
+        Codon codon(str.substr(0, Codon::s_codonSize));
+        for (size_t i = 0; i < dnaSequence.length() - Codon::s_codonSize + 1; ++i) {
+            ASSERT_TRUE(dnaSequence.codonAt(i) == codon);
+            for (size_t j = 0; j < Codon::s_codonSize-1; ++j)
+                codon[j] = codon[j+1];
+
+            codon[Codon::s_codonSize-1] = dnaSequence[i+Codon::s_codonSize];
+        }
         ss.clear();
         ss.str("");
     }
