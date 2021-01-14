@@ -88,7 +88,7 @@ public:
         friend iterator operator+(size_t, const iterator&);
 
         iterator& operator-=(size_t);
-        friend const iterator operator-(const iterator&, size_t);
+        friend iterator operator-(const iterator&, size_t);
         friend size_t operator-(const iterator&, const iterator&);
 
         Nucleotide& operator[](size_t);

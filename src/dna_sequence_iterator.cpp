@@ -75,7 +75,7 @@ iterator &iterator::operator-=(size_t index) {
     return *this;
 }
 
-const iterator operator-(const iterator& it, size_t index) {
+iterator operator-(const iterator& it, size_t index) {
     iterator ret(it.m_sequenceReference, it.m_index - index);
 
     return ret;
