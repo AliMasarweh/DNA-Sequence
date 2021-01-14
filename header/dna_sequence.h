@@ -38,17 +38,17 @@ public:
     class ConstIterator;
     iterator begin();
     iterator end();
-    const ConstIterator begin() const;
-    const ConstIterator end() const;
-    const ConstIterator cBegin() const;
-    const ConstIterator cEnd() const;
+    ConstIterator begin() const;
+    ConstIterator end() const;
+    ConstIterator cBegin() const;
+    ConstIterator cEnd() const;
 
     DNASequence pair() const;
     std::string asString() const;
 
     // might change the return value to bool
-    size_t writeToFile(std::string fileName) const;
-    size_t readFromFile(std::string fileName);
+    void writeToFile(std::string fileName) const;
+    DNASequence & readFromFile(std::string fileName);
 
     DNASequence slice(size_t start, size_t end);
     DNASequence pairSequence() const;

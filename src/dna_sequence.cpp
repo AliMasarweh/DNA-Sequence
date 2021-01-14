@@ -4,6 +4,9 @@
 
 #include <sstream>
 #include <cstring>
+#include <iostream>
+#include <fstream>
+
 #include "../header/dna_sequence.h"
 
 DNASequence::DNASequence(const char *cStringSequence) {
@@ -102,18 +105,18 @@ iterator DNASequence::end() {
     return  iterator(m_sequence, this->length());
 }
 
-const CItertor DNASequence::begin() const {
+CItertor DNASequence::begin() const {
     return  CItertor(m_sequence, 0);
 }
 
-const CItertor DNASequence::end() const {
+CItertor DNASequence::end() const {
     return  CItertor(m_sequence, this->length());
 }
 
-const CItertor DNASequence::cBegin() const {
+CItertor DNASequence::cBegin() const {
     return  CItertor(m_sequence, 0);
 }
-const CItertor DNASequence::cEnd() const {
+CItertor DNASequence::cEnd() const {
     return  CItertor(m_sequence, this->length());
 }
 
@@ -157,10 +160,23 @@ std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence) {
     return os;
 }
 
-size_t DNASequence::writeToFile(std::string fileName) const {
-
+void DNASequence::writeToFile(std::string fileName) const {
+    std::ofstream file(fileName);
+    if (file.is_open())
+        file << this->asString();
+    file.close();
 }
 
-size_t DNASequence::readFromFile(std::string fileName) {
+DNASequence& DNASequence::readFromFile(std::string fileName) {
+    std::string line;
+    std::ifstream file (fileName);
+    if (file.is_open())
+    {
+        if(getline (file,line)) {
+            *this = line;
+        }
+        file.close();
+    }
 
+    return *this;
 }

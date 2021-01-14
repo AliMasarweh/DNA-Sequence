@@ -7,9 +7,7 @@
 #include "../header/nucleotide.h"
 #include "../header/dna_sequence_exception.h"
 
-using namespace  std;
-
-map<char, char> Nucleotide::m_nucPairs = {
+std::map<char, char> Nucleotide::m_nucPairs = {
         {'A', 'T'},
         {'T', 'A'},
         {'C', 'G'},
