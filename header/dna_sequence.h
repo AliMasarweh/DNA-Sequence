@@ -106,10 +106,10 @@ public:
         const Nucleotide* operator->() const;
 
         const ConstIterator& operator++() const;
-        const ConstIterator operator++(int) const;
+        ConstIterator operator++(int) const;
 
         const ConstIterator& operator--() const;
-        const ConstIterator operator--(int) const;
+        ConstIterator operator--(int) const;
 
         friend void swap(ConstIterator& lhs, ConstIterator& rhs);
 
@@ -118,13 +118,13 @@ public:
 
         const ConstIterator& operator+=(size_t) const;
 
-        friend const ConstIterator operator+(const ConstIterator&, size_t);
+        friend ConstIterator operator+(const ConstIterator&, size_t);
 
-        friend const ConstIterator operator+(size_t, const ConstIterator&);
+        friend ConstIterator operator+(size_t, const ConstIterator&);
         friend ConstIterator operator+(size_t, ConstIterator&);
 
         const ConstIterator& operator-=(size_t) const;
-        friend const ConstIterator operator-(const ConstIterator&, size_t);
+        friend ConstIterator operator-(const ConstIterator&, size_t);
 
         const Nucleotide& operator[](size_t) const;
 

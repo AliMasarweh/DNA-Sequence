@@ -28,7 +28,7 @@ const CIterator &CIterator::operator++() const {
     return *this;
 }
 
-const CIterator CIterator::operator++(int) const {
+CIterator CIterator::operator++(int) const {
     CIterator it(m_sequenceReference, m_index++);
     return it;
 }
@@ -38,16 +38,16 @@ const CIterator &CIterator::operator--() const{
     return *this;
 }
 
-const CIterator CIterator::operator--(int) const{
+CIterator CIterator::operator--(int) const{
     CIterator it(m_sequenceReference, m_index--);
     return it;
 }
 
-const CIterator operator+(const CIterator& it, size_t index) {
+CIterator operator+(const CIterator& it, size_t index) {
     return CIterator(it.m_sequenceReference, it.m_index + index);
 }
 
-const CIterator operator+(size_t index, const CIterator& it) {
+CIterator operator+(size_t index, const CIterator& it) {
     return CIterator(it.m_sequenceReference, it.m_index + index);
 }
 
@@ -61,7 +61,7 @@ const CIterator &CIterator::operator-=(size_t index) const {
     return *this;
 }
 
-const CIterator operator-(const CIterator& it, size_t index) {
+CIterator operator-(const CIterator& it, size_t index) {
     return CIterator(it.m_sequenceReference, it.m_index-index);
 }
 
