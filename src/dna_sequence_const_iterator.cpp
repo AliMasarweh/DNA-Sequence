@@ -98,7 +98,13 @@ DNASequence DNASequence::slice(size_t start, size_t end) {
 }
 
 DNASequence DNASequence::pairSequence() const {
-    return DNASequence(nullptr);
+    char seq[this->length()+1];
+    for (size_t i = 0; i < this->length(); ++i) {
+        seq[i] = m_sequence[i].pair().asCharacter();
+    }
+    seq[this->length()] = 0;
+
+    return DNASequence(seq);
 }
 
 DNASequence::iterator DNASequence::find(DNASequence subSequence) const {
