@@ -218,7 +218,7 @@ size_t DNASequence::find(const DNASequence& subSequence, size_t startIndex) cons
     return std::string::npos;
 }
 
-size_t DNASequence::count(DNASequence subSequence) const {
+size_t DNASequence::count(const DNASequence& subSequence) const {
     size_t count = 0, i = 0;
     while((i = this->find(subSequence, i)) != std::string::npos) {
         ++count;
@@ -228,6 +228,13 @@ size_t DNASequence::count(DNASequence subSequence) const {
     return count;
 }
 
-std::vector<size_t> DNASequence::findAll(DNASequence subSequence) const {
-    return std::vector<iterator>();
+std::vector<size_t> DNASequence::findAll(const DNASequence& subSequence) const {
+    std::vector<size_t> ret;
+    size_t i = 0;
+    while((i = this->find(subSequence, i)) != std::string::npos) {
+        ret.push_back(i);
+        ++i;
+    }
+
+    return ret;
 }

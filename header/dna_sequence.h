@@ -56,9 +56,9 @@ public:
     // might be better to return an iterator!
     size_t find(const DNASequence& subSequence, size_t startIndex = 0) const;
 
-    size_t count(DNASequence subSequence) const;
+    size_t count(const DNASequence& subSequence) const;
 
-    std::vector<iterator> findAll(DNASequence subSequence) const;
+    std::vector<size_t> findAll(const DNASequence& subSequence) const;
 
 private:
     std::vector<size_t> m_sequence;
