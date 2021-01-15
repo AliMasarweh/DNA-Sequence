@@ -97,7 +97,7 @@ DNASequence DNASequence::slice(size_t start, size_t end) {
     return DNASequence(seq);
 }
 
-DNASequence DNASequence::pairSequence() const {
+DNASequence DNASequence::pair() const {
     char seq[this->length()+1];
     for (size_t i = 0; i < this->length(); ++i) {
         seq[i] = m_sequence[i].pair().asCharacter();
