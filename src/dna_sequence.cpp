@@ -202,24 +202,30 @@ DNASequence DNASequence::pairSequence() const {
     return DNASequence(seq);
 }
 
-size_t DNASequence::find(const DNASequence& subSequence) const {
-    for (size_t thisIndex = 0; thisIndex < this->length(); ++thisIndex) {
+size_t DNASequence::find(const DNASequence& subSequence, size_t startIndex) const {
+    for (; startIndex < this->length(); ++startIndex) {
         size_t subSeqIndex = 0;
         for (; subSeqIndex < subSequence.length(); ++ subSeqIndex) {
-            if((*this)[thisIndex+subSeqIndex] != subSequence[subSeqIndex]) {
+            if((*this)[startIndex+subSeqIndex] != subSequence[subSeqIndex]) {
                 break;
             }
         }
 
         if (subSeqIndex == subSequence.length())
-            return thisIndex;
+            return startIndex;
     }
 
     return std::string::npos;
 }
 
 size_t DNASequence::count(DNASequence subSequence) const {
-    return 0;
+    size_t count = 0, i = 0;
+    while((i = this->find(subSequence, i)) != std::string::npos) {
+        ++count;
+        ++i;
+    }
+
+    return count;
 }
 
 std::vector<size_t> DNASequence::findAll(DNASequence subSequence) const {
