@@ -180,3 +180,48 @@ DNASequence& DNASequence::readFromFile(std::string fileName) {
 
     return *this;
 }
+
+
+DNASequence DNASequence::slice(size_t start, size_t end) {
+    char seq[end - start];
+    for (size_t i = start; i < end - 1; ++i) {
+        seq[i-start] = m_sequence[i].asCharacter();
+    }
+    seq[end - start - 1] = 0;
+
+    return DNASequence(seq);
+}
+
+DNASequence DNASequence::pairSequence() const {
+    char seq[this->length()+1];
+    for (size_t i = 0; i < this->length(); ++i) {
+        seq[i] = m_sequence[i].pair().asCharacter();
+    }
+    seq[this->length()] = 0;
+
+    return DNASequence(seq);
+}
+
+size_t DNASequence::find(const DNASequence& subSequence) const {
+    for (size_t thisIndex = 0; thisIndex < this->length(); ++thisIndex) {
+        size_t subSeqIndex = 0;
+        for (; subSeqIndex < subSequence.length(); ++ subSeqIndex) {
+            if((*this)[thisIndex+subSeqIndex] != subSequence[subSeqIndex]) {
+                break;
+            }
+        }
+
+        if (subSeqIndex == subSequence.length())
+            return thisIndex;
+    }
+
+    return std::string::npos;
+}
+
+size_t DNASequence::count(DNASequence subSequence) const {
+    return 0;
+}
+
+std::vector<size_t> DNASequence::findAll(DNASequence subSequence) const {
+    return std::vector<iterator>();
+}

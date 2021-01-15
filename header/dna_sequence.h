@@ -51,17 +51,17 @@ public:
     DNASequence & readFromFile(std::string fileName);
 
     DNASequence slice(size_t start, size_t end);
-    DNASequence pair() const;
+    DNASequence pairSequence() const;
 
     // might be better to return an iterator!
-    iterator find(DNASequence subSequence) const;
+    size_t find(const DNASequence& subSequence) const;
 
     size_t count(DNASequence subSequence) const;
 
     std::vector<iterator> findAll(DNASequence subSequence) const;
 
 private:
-    std::vector<Nucleotide> m_sequence;
+    std::vector<size_t> m_sequence;
 
 public:
     class iterator {

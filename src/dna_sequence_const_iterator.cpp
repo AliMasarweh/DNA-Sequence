@@ -85,36 +85,3 @@ bool operator==(const CIterator& it1, const CIterator& it2) {
 bool operator!=(const CIterator& it1, const CIterator& it2) {
     return !(it1 == it2);
 }
-
-
-DNASequence DNASequence::slice(size_t start, size_t end) {
-    char seq[end - start];
-    for (size_t i = start; i < end - 1; ++i) {
-        seq[i-start] = m_sequence[i].asCharacter();
-    }
-    seq[end - start - 1] = 0;
-
-    return DNASequence(seq);
-}
-
-DNASequence DNASequence::pair() const {
-    char seq[this->length()+1];
-    for (size_t i = 0; i < this->length(); ++i) {
-        seq[i] = m_sequence[i].pair().asCharacter();
-    }
-    seq[this->length()] = 0;
-
-    return DNASequence(seq);
-}
-
-DNASequence::iterator DNASequence::find(DNASequence subSequence) const {
-    return DNASequence::iterator();
-}
-
-size_t DNASequence::count(DNASequence subSequence) const {
-    return 0;
-}
-
-std::vector<iterator> DNASequence::findAll(DNASequence subSequence) const {
-    return std::vector<iterator>();
-}
