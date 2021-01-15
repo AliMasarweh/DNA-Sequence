@@ -37,6 +37,8 @@ public:
     static CodonTypes typeOfCodon(const Codon& codon);
 
     static bool isValidCodonSequence(const Codon& codon);
+
+    friend class DNASequence;
 private:
     const static std::vector<Codon> s_startingCodons;
     const static std::vector<Codon> s_endingCodons;

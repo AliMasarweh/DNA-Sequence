@@ -59,9 +59,13 @@ public:
     size_t count(const DNASequence& subSequence) const;
 
     std::vector<size_t> findAll(const DNASequence& subSequence) const;
+    std::vector<std::pair<size_t, size_t>> findConsensusSequences() const;
 
 private:
-    std::vector<size_t> m_sequence;
+    std::vector<Nucleotide> m_sequence;
+
+    size_t minStartingCodonIndex(size_t start) const;
+    size_t minEndingCodonIndex(size_t start) const;
 
 public:
     class iterator {
