@@ -484,7 +484,7 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
             'A', 'T', 'G', 'C'
     };
 
-    size_t totalRandomTests = 100, dnaMaxLen = 90, minLen = 15, slicingIteration = 5;
+    size_t totalRandomTests = 1000, dnaMaxLen = 90, minLen = 15, slicingIteration = 5;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
@@ -509,7 +509,7 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
                     ++count;
                 }
             }
-            
+
             ASSERT_TRUE(dnaSequence.count(subStr) == count);
         }
         ss.clear();

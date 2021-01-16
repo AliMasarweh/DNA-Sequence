@@ -228,17 +228,10 @@ std::pair<size_t, size_t> DNASequence::findKMPS(const DNASequence& subSequence,
 }
 
 size_t DNASequence::count(const DNASequence& subSequence) const {
-    /*size_t count = 0, i = 0;
-    while((i = this->find(subSequence, i)) != std::string::npos) {
-        ++count;
-        ++i;
-    }
-
-    return count;*/
     size_t count = 0;
 
     std::pair<size_t, size_t> p(-subSequence.length(),0);
-    while((p = this->findKMPS(subSequence, p.first+subSequence.length(), p.second)).first != std::string::npos) {
+    while((p = this->findKMPS(subSequence, p.first+subSequence.length(), p.second)) != KMPSearcher<DNASequence>::s_endPair) {
         ++count;
     }
 
@@ -257,10 +250,9 @@ std::vector<size_t> DNASequence::findAll(const DNASequence& subSequence) const {
 
     std::vector<size_t> ret;
 
-    std::pair<size_t, size_t> p(0,0);
-    while((p = this->findKMPS(subSequence, p.first, p.second)) != KMPSearcher<DNASequence>::s_endPair) {
+    std::pair<size_t, size_t> p(-subSequence.length(),0);
+    while((p = this->findKMPS(subSequence, p.first+subSequence.length(), p.second)) != KMPSearcher<DNASequence>::s_endPair) {
         ret.push_back(p.first);
-        ++p.first;
     }
 
     return ret;
