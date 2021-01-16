@@ -476,3 +476,43 @@ TEST(DNASequenceManipulationMethodsTests, FindMethodTest) {
         ss.str("");
     }
 }
+
+TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
+    srand((unsigned ) time(nullptr));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 100, dnaMaxLen = 90, minLen = 15, slicingIteration = 5;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        DNASequence dnaSequence(str);
+        size_t maxSubStringLen = 15, minSubStringLen = 5;
+        size_t begin = 0, end = 0, subStrLen = str.length()%maxSubStringLen + minSubStringLen;
+        for (size_t i = 0; i < slicingIteration; ++i) {
+            begin = random() % (subStrLen - 1);
+            end = random() % (subStrLen - begin) + begin + 1;
+
+            string subStr = str.substr(begin, end-begin);
+
+            size_t count = 0, pos=0;
+            if((pos = str.find(subStr, pos)) != string::npos) {
+                ++pos;
+                ++count;
+                while((pos = str.find(subStr, pos)) != string::npos) {
+                    ++pos;
+                    ++count;
+                }
+            }
+            
+            ASSERT_TRUE(dnaSequence.count(subStr) == count);
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
