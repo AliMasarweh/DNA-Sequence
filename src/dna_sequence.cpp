@@ -205,7 +205,7 @@ DNASequence DNASequence::pairSequence() const {
 size_t DNASequence::find(const DNASequence& subSequence, size_t startIndex) const {
     for (; startIndex < this->length(); ++startIndex) {
         size_t subSeqIndex = 0;
-        for (; subSeqIndex < subSequence.length(); ++ subSeqIndex) {
+        for (; subSeqIndex < subSequence.length(); ++subSeqIndex) {
             if((*this)[startIndex+subSeqIndex] != subSequence[subSeqIndex]) {
                 break;
             }

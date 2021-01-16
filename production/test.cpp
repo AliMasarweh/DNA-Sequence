@@ -93,7 +93,7 @@ TEST(CodonBasicTests, InvalidCodonTest) {
 }
 
 TEST(CodonBasicTests, PairTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
       'A', 'T', 'G', 'C'
@@ -126,7 +126,7 @@ TEST(CodonBasicTests, PairTest) {
 
 
 TEST(CodonBasicTests, RationalOperatorsTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -146,7 +146,7 @@ TEST(CodonBasicTests, RationalOperatorsTest) {
 }
 
 TEST(CodonBasicTests, AsStringMethodTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -192,7 +192,7 @@ TEST(DNASequenceBasicTests, AssignmentOperators) {
 }
 
 TEST(DNASequenceBasicTests, PairTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -225,7 +225,7 @@ TEST(DNASequenceBasicTests, PairTest) {
 
 
 TEST(DNASequenceBasicTests, RationalOperatorsTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -245,7 +245,7 @@ TEST(DNASequenceBasicTests, RationalOperatorsTest) {
 }
 
 TEST(DNASequenceBasicTests, AsStringMethodTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -265,7 +265,7 @@ TEST(DNASequenceBasicTests, AsStringMethodTest) {
 }
 
 TEST(DNASequenceBasicTests, LengthTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -285,7 +285,7 @@ TEST(DNASequenceBasicTests, LengthTest) {
 }
 
 TEST(DNASequenceBasicTests, BracketsOperatorTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -307,7 +307,7 @@ TEST(DNASequenceBasicTests, BracketsOperatorTest) {
 }
 
 TEST(DNASequenceBasicTests, CodonAtMethodTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -335,7 +335,7 @@ TEST(DNASequenceBasicTests, CodonAtMethodTest) {
 }
 
 TEST(DNASequenceIteratorTests, BasicIteratorTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -365,7 +365,7 @@ TEST(DNASequenceIteratorTests, BasicIteratorTest) {
 }
 
 TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -396,7 +396,7 @@ TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
 }
 
 TEST(DNASequenceIteratorTests, RandmonAcessIteratorTest) {
-    srand((unsigned ) time(0));
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -422,8 +422,8 @@ TEST(DNASequenceIteratorTests, RandmonAcessIteratorTest) {
     }
 }
 
-TEST(DNASequenceBasicTests, SliceMethodTest) {
-    srand((unsigned ) time(0));
+TEST(DNASequenceManipulationMethodsTests, SliceMethodTest) {
+    srand((unsigned ) time(nullptr));
     const unsigned char numOfNucleotides = 4;
     char nucleotides[numOfNucleotides] = {
             'A', 'T', 'G', 'C'
@@ -440,8 +440,37 @@ TEST(DNASequenceBasicTests, SliceMethodTest) {
        size_t begin = 0, end = 0, strLen = str.length();
         for (size_t i = 0; i < slicingIteration; ++i) {
             begin = random() % (strLen - 1);
-            end = (random() + 1) % (strLen - begin) + begin;
+            end = random() % (strLen - begin) + begin + 1;
             ASSERT_TRUE(dnaSequence.slice(begin, end).asString() == str.substr(begin, end-begin));
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
+
+TEST(DNASequenceManipulationMethodsTests, FindMethodTest) {
+    srand((unsigned ) time(nullptr));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 90, minLen = 10, slicingIteration = 10;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        DNASequence dnaSequence(str);
+        size_t begin = 0, end = 0, strLen = str.length();
+        for (size_t i = 0; i < slicingIteration; ++i) {
+            begin = random() % (strLen - 1);
+            end = random() % (strLen - begin) + begin + 1;
+            string subStr = str.substr(begin, end-begin);
+            size_t indexOfSubStr = str.find(subStr);
+
+            ASSERT_TRUE(dnaSequence.find(subStr) == indexOfSubStr);
         }
         ss.clear();
         ss.str("");
