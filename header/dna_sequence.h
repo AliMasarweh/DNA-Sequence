@@ -55,6 +55,8 @@ public:
 
     // might be better to return an iterator!
     size_t find(const DNASequence& subSequence, size_t startIndex = 0) const;
+    std::pair<size_t, size_t> findKMPS(const DNASequence& subSequence,
+                                                    size_t startIndex = 0, size_t startIndexLPS = 0) const;
 
     size_t count(const DNASequence& subSequence) const;
 

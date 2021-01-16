@@ -14,5 +14,6 @@ add_executable(test_production production/test.cpp)
 link_directories(${MyProject_SOURCE_DIR}/src/CMakeLists.txt)
 
 target_link_libraries(dna_sequence SRC)
+target_link_libraries(quick_tests SRC)
 target_link_libraries(test_production gtest gtest_main pthread)
 target_link_libraries(test_production SRC)

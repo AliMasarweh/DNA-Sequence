@@ -509,7 +509,10 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
                     ++count;
                 }
             }
-            
+            if(dnaSequence.count(subStr) != count) {
+                cout << dnaSequence.count(subStr) << " " << count << " " << subStr << endl;
+                cout << dnaSequence << endl;
+            }
             ASSERT_TRUE(dnaSequence.count(subStr) == count);
         }
         ss.clear();

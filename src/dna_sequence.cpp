@@ -8,6 +8,7 @@
 #include <fstream>
 
 #include "../header/dna_sequence.h"
+#include "../header/utility/KMPSearcher.h"
 
 DNASequence::DNASequence(const char *cStringSequence) {
     while (*cStringSequence)
@@ -218,6 +219,14 @@ size_t DNASequence::find(const DNASequence& subSequence, size_t startIndex) cons
     return std::string::npos;
 }
 
+std::pair<size_t, size_t> DNASequence::findKMPS(const DNASequence& subSequence,
+                                                size_t startIndex, size_t startIndexLPS) const {
+    std::vector<size_t> lpsArray;
+    KMPSearcher<DNASequence>::computeLPSArray(subSequence, lpsArray);
+
+    return KMPSearcher<DNASequence>::KMPSearch(*this, subSequence, lpsArray, startIndex, startIndexLPS);
+}
+
 size_t DNASequence::count(const DNASequence& subSequence) const {
     size_t count = 0, i = 0;
     while((i = this->find(subSequence, i)) != std::string::npos) {
@@ -226,14 +235,33 @@ size_t DNASequence::count(const DNASequence& subSequence) const {
     }
 
     return count;
+    /*size_t count = 0;
+
+    std::pair<size_t, size_t> p(0,0);
+    while((p = this->findKMPS(subSequence, p.first+ p.second, p.second)).first != std::string::npos) {
+        ++count;
+        ++p.first;
+    }
+
+    return count;*/
 }
 
 std::vector<size_t> DNASequence::findAll(const DNASequence& subSequence) const {
-    std::vector<size_t> ret;
+    /*std::vector<size_t> ret;
     size_t i = 0;
     while((i = this->find(subSequence, i)) != std::string::npos) {
         ret.push_back(i);
         ++i;
+    }
+
+    return ret;*/
+
+    std::vector<size_t> ret;
+
+    std::pair<size_t, size_t> p(0,0);
+    while((p = this->findKMPS(subSequence, p.first, p.second)) != KMPSearcher<DNASequence>::s_endPair) {
+        ret.push_back(p.first);
+        ++p.first;
     }
 
     return ret;
