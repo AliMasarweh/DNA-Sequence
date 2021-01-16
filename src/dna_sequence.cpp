@@ -270,5 +270,3 @@ size_t DNASequence::minEndingCodonIndex(size_t start) const {
 
     return minIndex;
 }
-
-}

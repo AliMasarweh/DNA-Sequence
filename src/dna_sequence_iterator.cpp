@@ -88,5 +88,5 @@ size_t operator-(const iterator& it1, const iterator& it2) {
 Nucleotide &iterator::operator[](size_t index) {
     if(m_index + index > m_sequenceReference.size()) { throw IteratorOutOfBoundsException(); }
 
-    return m_sequenceReference[m_index];
+    return m_sequenceReference[m_index + index];
 }

@@ -394,3 +394,30 @@ TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
         ss.str("");
     }
 }
+
+TEST(DNASequenceIteratorTests, RandmonAcessIteratorTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        DNASequence dnaSequence(str);
+        DNASequence::iterator it = dnaSequence.begin();
+        ASSERT_TRUE(it+dnaSequence.length() == dnaSequence.end());
+        size_t j = 0;
+        for (size_t i = 0; i < dnaSequence.length(); ++i) {
+            ASSERT_TRUE((it[i]) == dnaSequence[i]);
+
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
