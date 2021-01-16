@@ -515,3 +515,42 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
         ss.str("");
     }
 }
+
+TEST(DNASequenceManipulationMethodsTests, FindAllMethodTest) {
+    srand((unsigned ) time(nullptr));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 90, minLen = 15, slicingIteration = 5;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string randomString = ss.str();
+        DNASequence dnaSequence(randomString);
+        size_t maxSubStringLen = 15, minSubStringLen = 5;
+        // to slice the string
+        size_t beginSlicing = 0, endSlicing = 0;
+        // sub string length is between minSubStringLen (5) and maxSubStringLen(15)
+        size_t subStrLen = randomString.length()%maxSubStringLen + minSubStringLen;
+        for (size_t i = 0; i < slicingIteration; ++i) {
+            beginSlicing = random() % (subStrLen - 1);
+            endSlicing = random() % (subStrLen - beginSlicing) + beginSlicing + 1;
+
+            string subStrOfRandomString = randomString.substr(beginSlicing, endSlicing-beginSlicing);
+            vector<size_t> allIndexesOfSubString;
+            size_t pos=0;
+            while((pos = randomString.find(subStrOfRandomString, pos)) != string::npos) {
+                allIndexesOfSubString.push_back(pos);
+                ++pos;
+            }
+
+            ASSERT_TRUE(dnaSequence.findAll(subStrOfRandomString) == allIndexesOfSubString);
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
