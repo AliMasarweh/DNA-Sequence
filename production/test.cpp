@@ -490,27 +490,26 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
     for (size_t i = 0; i < totalRandomTests; ++i) {
         for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
             ss << nucleotides[random() % numOfNucleotides];
-        std::string str = ss.str();
-        DNASequence dnaSequence(str);
+        std::string randomString = ss.str();
+        DNASequence dnaSequence(randomString);
         size_t maxSubStringLen = 15, minSubStringLen = 5;
-        size_t begin = 0, end = 0, subStrLen = str.length()%maxSubStringLen + minSubStringLen;
+        // to slice the string
+        size_t beginSlicing = 0, endSlicing = 0;
+        // sub string length is between minSubStringLen (5) and maxSubStringLen(15)
+        size_t subStrLen = randomString.length()%maxSubStringLen + minSubStringLen;
         for (size_t i = 0; i < slicingIteration; ++i) {
-            begin = random() % (subStrLen - 1);
-            end = random() % (subStrLen - begin) + begin + 1;
+            beginSlicing = random() % (subStrLen - 1);
+            endSlicing = random() % (subStrLen - beginSlicing) + beginSlicing + 1;
 
-            string subStr = str.substr(begin, end-begin);
+            string subStrOfRandomString = randomString.substr(beginSlicing, endSlicing-beginSlicing);
 
             size_t count = 0, pos=0;
-            if((pos = str.find(subStr, pos)) != string::npos) {
+            while((pos = randomString.find(subStrOfRandomString, pos)) != string::npos) {
                 ++pos;
                 ++count;
-                while((pos = str.find(subStr, pos)) != string::npos) {
-                    ++pos;
-                    ++count;
-                }
             }
 
-            ASSERT_TRUE(dnaSequence.count(subStr) == count);
+            ASSERT_TRUE(dnaSequence.count(subStrOfRandomString) == count);
         }
         ss.clear();
         ss.str("");
