@@ -10,7 +10,7 @@
 #include "../header/dna_sequence.h"
 
 DNASequence::DNASequence(const char *cStringSequence) {
-    while (! *cStringSequence)
+    while (*cStringSequence)
         m_sequence.emplace_back( Nucleotide(* (cStringSequence++)) );
 }
 
@@ -183,11 +183,11 @@ DNASequence& DNASequence::readFromFile(std::string fileName) {
 
 
 DNASequence DNASequence::slice(size_t start, size_t end) {
-    char seq[end - start];
-    for (size_t i = start; i < end - 1; ++i) {
+    char seq[end - start + 1];
+    for (size_t i = start; i < end; ++i) {
         seq[i-start] = m_sequence[i].asCharacter();
     }
-    seq[end - start - 1] = 0;
+    seq[end - start] = 0;
 
     return DNASequence(seq);
 }

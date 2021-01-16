@@ -421,3 +421,29 @@ TEST(DNASequenceIteratorTests, RandmonAcessIteratorTest) {
         ss.str("");
     }
 }
+
+TEST(DNASequenceBasicTests, SliceMethodTest) {
+    srand((unsigned ) time(0));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 90, minLen = 10, slicingIteration = 10;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string str = ss.str();
+        DNASequence dnaSequence(str);
+       size_t begin = 0, end = 0, strLen = str.length();
+        for (size_t i = 0; i < slicingIteration; ++i) {
+            begin = random() % (strLen - 1);
+            end = (random() + 1) % (strLen - begin) + begin;
+            ASSERT_TRUE(dnaSequence.slice(begin, end).asString() == str.substr(begin, end-begin));
+        }
+        ss.clear();
+        ss.str("");
+    }
+}
