@@ -86,6 +86,11 @@ const map<char, char> MyGTestUtil::s_nucPairs = {
         {'G', 'C'}
 };
 
+static void emptyStream(stringstream& ss) {
+    ss.clear();
+    ss.str("");
+}
+
 // ******************************** Nucleotide Tests ********************************
 TEST(NucleotideBasicTests, InitTest) {
     Nucleotide nucleotideA('A'), nucleotideC('C'),
@@ -172,10 +177,8 @@ TEST(CodonBasicTests, PairTest) {
         pair<Codon, Codon> pair1 = MyGTestUtil::randomCodon(ss, flipped_ss);
 
         ASSERT_TRUE(pair1.first.pair() == pair1.second);
-        ss.clear();
-        ss.str("");
-        flipped_ss.clear();
-        flipped_ss.str("");
+        emptyStream(ss);
+        emptyStream(flipped_ss);
     }
 }
 
@@ -190,8 +193,7 @@ TEST(CodonBasicTests, RationalOperatorsTest) {
         Codon codon = MyGTestUtil::randomCodon(ss);
 
         ASSERT_TRUE(codon == ss.str());
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -205,8 +207,7 @@ TEST(CodonBasicTests, AsStringMethodTest) {
         Codon codon = MyGTestUtil::randomCodon(ss);
 
         ASSERT_TRUE(codon.asString() == ss.str());
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -246,10 +247,8 @@ TEST(DNASequenceBasicTests, PairTest) {
         pair<DNASequence, DNASequence> pair1 = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss, flipped_ss);
 
         ASSERT_TRUE(pair1.first.pair() == pair1.second);
-        ss.clear();
-        ss.str("");
-        flipped_ss.clear();
-        flipped_ss.str("");
+        emptyStream(ss);
+        emptyStream(flipped_ss);
     }
 }
 
@@ -264,8 +263,7 @@ TEST(DNASequenceBasicTests, RationalOperatorsTest) {
         DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
 
         ASSERT_TRUE(dnaSequence == ss.str());
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -279,8 +277,7 @@ TEST(DNASequenceBasicTests, AsStringMethodTest) {
         DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
 
         ASSERT_TRUE(DNASequence(ss.str()).asString() == ss.str());
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -294,8 +291,7 @@ TEST(DNASequenceBasicTests, LengthTest) {
         DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
 
         ASSERT_TRUE(DNASequence(ss.str()).length() == ss.str().length());
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -311,8 +307,7 @@ TEST(DNASequenceBasicTests, BracketsOperatorTest) {
 
         for (size_t i = 0; i < dnaSequence.length(); ++i)
             ASSERT_TRUE(dnaSequence[i] == str[i]);
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -334,8 +329,7 @@ TEST(DNASequenceBasicTests, CodonAtMethodTest) {
 
             codon[Codon::s_codonSize-1] = dnaSequence[i+Codon::s_codonSize];
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -359,8 +353,7 @@ TEST(DNASequenceIteratorTests, BasicIteratorTest) {
                 ++it;
             }
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -385,8 +378,7 @@ TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
                 --it;
             }
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -407,8 +399,7 @@ TEST(DNASequenceIteratorTests, RandmonAcessIteratorTest) {
             ASSERT_TRUE((it[i]) == dnaSequence[i]);
 
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -427,8 +418,7 @@ TEST(DNASequenceManipulationMethodsTests, SliceMethodTest) {
             end = random() % (strLen - begin) + begin + 1;
             ASSERT_TRUE(dnaSequence.slice(begin, end).asString() == str.substr(begin, end-begin));
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -451,8 +441,7 @@ TEST(DNASequenceManipulationMethodsTests, FindMethodTest) {
 
             ASSERT_TRUE(dnaSequence.find(subStr) == indexOfSubStr);
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -485,8 +474,7 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
 
             ASSERT_TRUE(dnaSequence.count(subStrOfRandomString) == count);
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -518,8 +506,7 @@ TEST(DNASequenceManipulationMethodsTests, FindAllMethodTest) {
 
             ASSERT_TRUE(dnaSequence.findAll(subStrOfRandomString) == allIndexesOfSubString);
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
 
@@ -538,8 +525,7 @@ TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
         dnaSequences.emplace_back(DNASequence(ss.str()));
         dnaSequences[index].writeToFile(fileName+to_string(index));
 
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 
     for (size_t index = 0; index < totalRandomTests; ++index) {
@@ -564,7 +550,6 @@ TEST(DNASequenceManipulationMethodsTests, FindAllConsensusMethodTest) {
 
 //            ASSERT_TRUE(dnaSequence.findConsensusSequences() == allIndexesConsensus);
         }
-        ss.clear();
-        ss.str("");
+        emptyStream(ss);
     }
 }
