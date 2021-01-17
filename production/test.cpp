@@ -243,13 +243,9 @@ TEST(DNASequenceBasicTests, PairTest) {
     stringstream ss, flipped_ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + dnaMinLen; ++x) {
-            char c = MyGTestUtil::randomNucleotide().asCharacter();
-            ss << c;
-            flipped_ss  << MyGTestUtil::s_nucPairs.at(c);
-        }
+        pair<DNASequence, DNASequence> pair1 = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss, flipped_ss);
 
-        ASSERT_TRUE(DNASequence(ss.str()).pair() == DNASequence(flipped_ss.str()));
+        ASSERT_TRUE(pair1.first.pair() == pair1.second);
         ss.clear();
         ss.str("");
         flipped_ss.clear();
@@ -261,14 +257,13 @@ TEST(DNASequenceBasicTests, PairTest) {
 TEST(DNASequenceBasicTests, RationalOperatorsTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
 
-        ASSERT_TRUE(DNASequence(ss.str()) == ss.str());
+        ASSERT_TRUE(dnaSequence == ss.str());
         ss.clear();
         ss.str("");
     }
@@ -277,12 +272,11 @@ TEST(DNASequenceBasicTests, RationalOperatorsTest) {
 TEST(DNASequenceBasicTests, AsStringMethodTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
 
         ASSERT_TRUE(DNASequence(ss.str()).asString() == ss.str());
         ss.clear();
@@ -293,12 +287,11 @@ TEST(DNASequenceBasicTests, AsStringMethodTest) {
 TEST(DNASequenceBasicTests, LengthTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
 
         ASSERT_TRUE(DNASequence(ss.str()).length() == ss.str().length());
         ss.clear();
@@ -309,14 +302,13 @@ TEST(DNASequenceBasicTests, LengthTest) {
 TEST(DNASequenceBasicTests, BracketsOperatorTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
+
         for (size_t i = 0; i < dnaSequence.length(); ++i)
             ASSERT_TRUE(dnaSequence[i] == str[i]);
         ss.clear();
@@ -327,15 +319,14 @@ TEST(DNASequenceBasicTests, BracketsOperatorTest) {
 TEST(DNASequenceBasicTests, CodonAtMethodTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 97;
+    size_t totalRandomTests = 1000, dnaMaxLen = 97, dnaMinLen = Codon::s_codonSize;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + Codon::s_codonSize; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
         Codon codon(str.substr(0, Codon::s_codonSize));
+
         for (size_t i = 0; i < dnaSequence.length() - Codon::s_codonSize + 1; ++i) {
             ASSERT_TRUE(dnaSequence.codonAt(i) == codon);
             for (size_t j = 0; j < Codon::s_codonSize-1; ++j)
@@ -351,15 +342,14 @@ TEST(DNASequenceBasicTests, CodonAtMethodTest) {
 TEST(DNASequenceIteratorTests, BasicIteratorTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
         DNASequence::iterator it = dnaSequence.begin();
+
         ASSERT_TRUE(it+dnaSequence.length() == dnaSequence.end());
         for (size_t i = 0; i < dnaSequence.length(); ++i) {
             if(random()%2 >= 1)
@@ -377,15 +367,14 @@ TEST(DNASequenceIteratorTests, BasicIteratorTest) {
 TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
         DNASequence::iterator it = dnaSequence.begin() + (dnaSequence.length() - 1);
+
         ASSERT_TRUE(it - (dnaSequence.length() - 1) == dnaSequence.begin());
         size_t maxSize = -1;
         for (size_t i = dnaSequence.length()-1; i != maxSize; --i) {
@@ -404,15 +393,14 @@ TEST(DNASequenceIteratorTests, ReverseIteratorTest) {
 TEST(DNASequenceIteratorTests, RandmonAcessIteratorTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(dnaMinLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
         DNASequence::iterator it = dnaSequence.begin();
+
         ASSERT_TRUE(it+dnaSequence.length() == dnaSequence.end());
         size_t j = 0;
         for (size_t i = 0; i < dnaSequence.length(); ++i) {
@@ -431,11 +419,9 @@ TEST(DNASequenceManipulationMethodsTests, SliceMethodTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(minLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
-       size_t begin = 0, end = 0, strLen = str.length();
+        size_t begin = 0, end = 0, strLen = str.length();
         for (size_t i = 0; i < slicingIteration; ++i) {
             begin = random() % (strLen - 1);
             end = random() % (strLen - begin) + begin + 1;
@@ -453,11 +439,10 @@ TEST(DNASequenceManipulationMethodsTests, FindMethodTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(minLen, dnaMaxLen, ss);
         std::string str = ss.str();
-        DNASequence dnaSequence(str);
         size_t begin = 0, end = 0, strLen = str.length();
+
         for (size_t i = 0; i < slicingIteration; ++i) {
             begin = random() % (strLen - 1);
             end = random() % (strLen - begin) + begin + 1;
@@ -478,15 +463,14 @@ TEST(DNASequenceManipulationMethodsTests, CountMethodTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(minLen, dnaMaxLen, ss);
         std::string randomString = ss.str();
-        DNASequence dnaSequence(randomString);
         size_t maxSubStringLen = 15, minSubStringLen = 5;
         // to slice the string
         size_t beginSlicing = 0, endSlicing = 0;
         // sub string length is between minSubStringLen (5) and maxSubStringLen(15)
         size_t subStrLen = randomString.length()%maxSubStringLen + minSubStringLen;
+
         for (size_t i = 0; i < slicingIteration; ++i) {
             beginSlicing = random() % (subStrLen - 1);
             endSlicing = random() % (subStrLen - beginSlicing) + beginSlicing + 1;
@@ -513,10 +497,8 @@ TEST(DNASequenceManipulationMethodsTests, FindAllMethodTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(minLen, dnaMaxLen, ss);
         std::string randomString = ss.str();
-        DNASequence dnaSequence(randomString);
         size_t maxSubStringLen = 15, minSubStringLen = 5;
         // to slice the string
         size_t beginSlicing = 0, endSlicing = 0;
@@ -573,12 +555,8 @@ TEST(DNASequenceManipulationMethodsTests, FindAllConsensusMethodTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        DNASequence dnaSequence = MyGTestUtil::randomDNASequence(minLen, dnaMaxLen, ss);
         std::string randomString = ss.str();
-        DNASequence dnaSequence(randomString);
-
-
 
         for (size_t i = 0; i < slicingIteration; ++i) {
             vector<pair<size_t, size_t>> allIndexesConsensus;
