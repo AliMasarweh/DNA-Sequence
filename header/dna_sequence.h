@@ -47,8 +47,9 @@ public:
     std::string asString() const;
 
     // might change the return value to bool
-    void writeToFile(std::string fileName) const;
-    DNASequence & readFromFile(std::string fileName);
+    void writeToFile(const std::string& fileName) const;
+//    DNASequence & readFromFile(const std::string& fileName);
+    static DNASequence readFromFile(const std::string& fileName);
 
     DNASequence slice(size_t start, size_t end);
     DNASequence pairSequence() const;

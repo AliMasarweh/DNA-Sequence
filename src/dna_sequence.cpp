@@ -161,25 +161,27 @@ std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence) {
     return os;
 }
 
-void DNASequence::writeToFile(std::string fileName) const {
+void DNASequence::writeToFile(const std::string& fileName) const {
     std::ofstream file(fileName);
     if (file.is_open())
         file << this->asString();
     file.close();
 }
 
-DNASequence& DNASequence::readFromFile(std::string fileName) {
+DNASequence DNASequence::readFromFile(const std::string& fileName) {
+    DNASequence ret("A");
     std::string line;
     std::ifstream file (fileName);
     if (file.is_open())
     {
         if(getline (file,line)) {
-            *this = line;
+            std::cout << "LINE " << line << std::endl;
+            ret = line;
         }
         file.close();
     }
 
-    return *this;
+    return ret;
 }
 
 

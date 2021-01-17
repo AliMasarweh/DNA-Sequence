@@ -554,3 +554,34 @@ TEST(DNASequenceManipulationMethodsTests, FindAllMethodTest) {
         ss.str("");
     }
 }
+
+TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
+    srand((unsigned ) time(nullptr));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    vector<DNASequence> dnaSequences;
+    stringstream ss;
+
+    string fileName = "./DNA-DataBase/DNA-Sequence-";
+    size_t index = 0;
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+
+        dnaSequences.emplace_back(DNASequence(ss.str()));
+        dnaSequences[dnaSequences.size() - 1].writeToFile(fileName+to_string(index));
+
+        ss.clear();
+        ss.str("");
+    }
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        DNASequence dnaSequence = DNASequence::readFromFile(fileName+to_string(index));
+        cout << dnaSequences[i] << "  " << dnaSequence << endl;
+        ASSERT_TRUE(dnaSequences[i] == dnaSequence);
+    }
+}
