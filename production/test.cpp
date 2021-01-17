@@ -437,9 +437,8 @@ TEST(DNASequenceManipulationMethodsTests, FindMethodTest) {
             begin = random() % (strLen - 1);
             end = random() % (strLen - begin) + begin + 1;
             string subStr = str.substr(begin, end-begin);
-            size_t indexOfSubStr = str.find(subStr);
 
-            ASSERT_TRUE(dnaSequence.find(subStr) == indexOfSubStr);
+            ASSERT_TRUE(dnaSequence.find(subStr) == str.find(subStr));
         }
         emptyStream(ss);
     }
