@@ -268,7 +268,7 @@ std::vector<std::pair<size_t, size_t>> DNASequence::findConsensusSequences() con
         size_t end = start;
         if((end = minStartingIndexFromCodons(end, Codon::s_endingCodons)) == std::string::npos)
             break;
-        ret.emplace_back(start, end);
+        ret.emplace_back(std::pair<size_t, size_t>(start, end));
         ++start;
     }
 

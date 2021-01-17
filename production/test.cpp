@@ -92,10 +92,10 @@ namespace GTestUtilityStaticFunctions {
         ss.str("");
     }
 
-    static size_t minIndexFromCodon(string dnaSeq, const vector<string>& codons) {
-        size_t minIndex = dnaSeq.find(codons[0]);
+    static size_t minIndexFromCodon(string dnaSeq, size_t startingIndex, const vector<string>& codons) {
+        size_t minIndex = dnaSeq.find(codons[0], startingIndex);
         for (int i = 1; i < codons.size(); ++i) {
-            minIndex = min(minIndex, dnaSeq.find(codons[i]));
+            minIndex = min(minIndex, dnaSeq.find(codons[i], startingIndex));
         }
 
         return minIndex;
@@ -549,8 +549,16 @@ TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
 TEST(DNASequenceManipulationMethodsTests, FindAllConsensusMethodTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 90, minLen = 15, slicingIteration = 5;
+    size_t totalRandomTests = 1000, dnaMaxLen = 300, minLen = 150, slicingIteration = 5;
     stringstream ss;
+
+    vector<string> startingCodons, endingCodons;
+
+    for (Codon codon: Codon::getStartingCodons())
+        startingCodons.emplace_back(codon.asString());
+    for (Codon codon: Codon::getEndingCodons())
+        endingCodons.emplace_back(codon.asString());
+
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
         DNASequence dnaSequence = GTestUtil::randomDNASequence(minLen, dnaMaxLen, ss);
@@ -560,8 +568,17 @@ TEST(DNASequenceManipulationMethodsTests, FindAllConsensusMethodTest) {
             vector<pair<size_t, size_t>> allIndexesConsensus;
             size_t startingCodonIndex = 0, endingCodonIndex = 0;
 
+            while((startingCodonIndex=minIndexFromCodon(randomString, startingCodonIndex, startingCodons)) != string::npos) {
+                endingCodonIndex = startingCodonIndex;
+                if((endingCodonIndex=minIndexFromCodon(randomString, endingCodonIndex, endingCodons)) == string::npos) {
+                    break;
+                }
 
-//            ASSERT_TRUE(dnaSequence.findConsensusSequences() == allIndexesConsensus);
+                allIndexesConsensus.emplace_back(pair<size_t, size_t>(startingCodonIndex, endingCodonIndex));
+                ++startingCodonIndex;
+            }
+
+            ASSERT_TRUE(dnaSequence.findConsensusSequences() == allIndexesConsensus);
         }
         emptyStream(ss);
     }
