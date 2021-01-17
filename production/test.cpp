@@ -583,3 +583,32 @@ TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
         ASSERT_TRUE(dnaSequences[index] == dnaSequence);
     }
 }
+
+TEST(DNASequenceManipulationMethodsTests, FindAllConsensusMethodTest) {
+    srand((unsigned ) time(nullptr));
+    const unsigned char numOfNucleotides = 4;
+    char nucleotides[numOfNucleotides] = {
+            'A', 'T', 'G', 'C'
+    };
+
+    size_t totalRandomTests = 1000, dnaMaxLen = 90, minLen = 15, slicingIteration = 5;
+    stringstream ss;
+
+    for (size_t i = 0; i < totalRandomTests; ++i) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + minLen; ++x)
+            ss << nucleotides[random() % numOfNucleotides];
+        std::string randomString = ss.str();
+        DNASequence dnaSequence(randomString);
+
+
+
+        for (size_t i = 0; i < slicingIteration; ++i) {
+            vector<pair<size_t, size_t>> allIndexesConsensus;
+
+
+            ASSERT_TRUE(dnaSequence.findConsensusSequences() == allIndexesConsensus);
+        }
+        ss.clear();
+        ss.str("");
+    }
+}

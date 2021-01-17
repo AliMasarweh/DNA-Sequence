@@ -39,6 +39,10 @@ public:
     static bool isValidCodonSequence(const Codon& codon);
 
     friend class DNASequence;
+
+    static const std::vector<Codon>& getStartingCodons();
+    static const std::vector<Codon>& getEndingCodons();
+
 private:
     const static std::vector<Codon> s_startingCodons;
     const static std::vector<Codon> s_endingCodons;

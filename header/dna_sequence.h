@@ -67,8 +67,8 @@ public:
 private:
     std::vector<Nucleotide> m_sequence;
 
-    size_t minStartingCodonIndex(size_t start) const;
-    size_t minEndingCodonIndex(size_t start) const;
+    size_t minStartingCodonIndex(size_t startingIndex) const;
+    size_t minEndingCodonIndex(size_t startingIndex) const;
 
 public:
     class iterator {

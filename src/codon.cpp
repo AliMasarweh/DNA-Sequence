@@ -131,3 +131,10 @@ bool Codon::isValidCodonSequence(const Codon &codon) {
     return codon.m_codonSeq.size() == s_codonSize;
 }
 
+const std::vector<Codon>& Codon::getStartingCodons() {
+    return s_startingCodons;
+}
+
+const std::vector<Codon>& Codon::getEndingCodons() {
+    return s_endingCodons;
+}
