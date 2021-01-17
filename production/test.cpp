@@ -28,8 +28,42 @@ public:
         return s_nucleotides[randomNumber()%s_numOfNucleotides];
     }
 
-    static DNASequence randomDNASequence() {
+    static Codon randomCodon(stringstream& ss) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x) {
+            char c = MyGTestUtil::randomNucleotide().asCharacter();
+            ss << c;
+        }
 
+        return Codon(ss.str());
+    }
+
+    static pair<Codon, Codon> randomCodon(stringstream& ss, stringstream& flipped_ss) {
+        for (unsigned char x = 0; x < Codon::s_codonSize; ++x) {
+            char c = MyGTestUtil::randomNucleotide().asCharacter();
+            ss << c;
+            flipped_ss  << MyGTestUtil::s_nucPairs.at(c);
+        }
+
+        return pair<Codon, Codon>(Codon(ss.str()), Codon(flipped_ss.str()));
+    }
+
+    static DNASequence randomDNASequence(size_t dnaMinLen, size_t dnaMaxLen, stringstream& ss) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + dnaMinLen; ++x) {
+            char c = MyGTestUtil::randomNucleotide().asCharacter();
+            ss << c;
+        }
+
+        return DNASequence(ss.str());
+    }
+
+    static pair<DNASequence, DNASequence> randomDNASequence(size_t dnaMinLen, size_t dnaMaxLen, stringstream& ss, stringstream& flipped_ss) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + dnaMinLen; ++x) {
+            char c = MyGTestUtil::randomNucleotide().asCharacter();
+            ss << c;
+            flipped_ss  << MyGTestUtil::s_nucPairs.at(c);
+        }
+
+        return pair<DNASequence, DNASequence>(DNASequence(ss.str()), DNASequence(flipped_ss.str()));
     }
 
     static size_t randomNumber() {
@@ -135,13 +169,9 @@ TEST(CodonBasicTests, PairTest) {
     stringstream ss, flipped_ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < Codon::s_codonSize; ++x) {
-            char c = MyGTestUtil::randomNucleotide().asCharacter();
-            ss << c;
-            flipped_ss  << MyGTestUtil::s_nucPairs.at(c);
-        }
+        pair<Codon, Codon> pair1 = MyGTestUtil::randomCodon(ss, flipped_ss);
 
-        ASSERT_TRUE(Codon(ss.str()).pair() == Codon(flipped_ss.str()));
+        ASSERT_TRUE(pair1.first.pair() == pair1.second);
         ss.clear();
         ss.str("");
         flipped_ss.clear();
@@ -157,10 +187,9 @@ TEST(CodonBasicTests, RationalOperatorsTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        Codon codon = MyGTestUtil::randomCodon(ss);
 
-        ASSERT_TRUE(Codon(ss.str()) == ss.str());
+        ASSERT_TRUE(codon == ss.str());
         ss.clear();
         ss.str("");
     }
@@ -173,10 +202,9 @@ TEST(CodonBasicTests, AsStringMethodTest) {
     stringstream ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < Codon::s_codonSize; ++x)
-            ss << MyGTestUtil::randomNucleotide().asCharacter();
+        Codon codon = MyGTestUtil::randomCodon(ss);
 
-        ASSERT_TRUE(Codon(ss.str()).asString() == ss.str());
+        ASSERT_TRUE(codon.asString() == ss.str());
         ss.clear();
         ss.str("");
     }
@@ -211,11 +239,11 @@ TEST(DNASequenceBasicTests, AssignmentOperators) {
 TEST(DNASequenceBasicTests, PairTest) {
     srand((unsigned ) time(nullptr));
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 99, dnaMinLen = 1;
     stringstream ss, flipped_ss;
 
     for (size_t i = 0; i < totalRandomTests; ++i) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x) {
+        for (unsigned char x = 0; x < random() % dnaMaxLen + dnaMinLen; ++x) {
             char c = MyGTestUtil::randomNucleotide().asCharacter();
             ss << c;
             flipped_ss  << MyGTestUtil::s_nucPairs.at(c);
