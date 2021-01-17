@@ -562,13 +562,13 @@ TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
             'A', 'T', 'G', 'C'
     };
 
-    size_t totalRandomTests = 1000, dnaMaxLen = 99;
+    size_t totalRandomTests = 1000, dnaMaxLen = 66, dnaMinLen = 35;
     vector<DNASequence> dnaSequences;
     stringstream ss;
 
     string fileName = "DNA-DataBase/DNA-Sequence-";
     for (size_t index = 0; index < totalRandomTests; ++index) {
-        for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
+        for (unsigned char x = 0; x < random() % dnaMaxLen + dnaMinLen; ++x)
             ss << nucleotides[random() % numOfNucleotides];
 
         dnaSequences.emplace_back(DNASequence(ss.str()));
