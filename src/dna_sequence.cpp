@@ -264,9 +264,9 @@ std::vector<size_t> DNASequence::findAll(const DNASequence& subSequence) const {
 std::vector<std::pair<size_t, size_t>> DNASequence::findConsensusSequences() const {
     std::vector<std::pair<size_t, size_t>> ret;
     size_t start = 0;
-    while((start = minStartingCodonIndex(start)) != std::string::npos) {
+    while((start = minStartingIndexFromCodons(start, Codon::s_startingCodons)) != std::string::npos) {
         size_t end = start;
-        if((end = minEndingCodonIndex(end)) == std::string::npos)
+        if((end = minStartingIndexFromCodons(end, Codon::s_endingCodons)) == std::string::npos)
             break;
         ret.emplace_back(start, end);
         ++start;
@@ -275,20 +275,11 @@ std::vector<std::pair<size_t, size_t>> DNASequence::findConsensusSequences() con
     return ret;
 }
 
-size_t DNASequence::minStartingCodonIndex(size_t start) const {
+size_t DNASequence::minStartingIndexFromCodons(size_t startingIndex, const std::vector<Codon>& codons) const {
     size_t minIndex = std::string::npos;
 
-    for (Codon codon: Codon::s_startingCodons)
-        minIndex = std::min(minIndex, this->find(DNASequence(codon.asString()), start));
-
-    return minIndex;
-}
-
-size_t DNASequence::minEndingCodonIndex(size_t start) const {
-    size_t minIndex = std::string::npos;
-
-    for (Codon codon: Codon::s_endingCodons)
-        minIndex = std::min(minIndex, this->find(DNASequence(codon.asString()), start));
+    for (Codon codon: codons)
+        minIndex = std::min(minIndex, this->find(DNASequence(codon.asString()), startingIndex));
 
     return minIndex;
 }
