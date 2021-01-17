@@ -566,22 +566,20 @@ TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
     vector<DNASequence> dnaSequences;
     stringstream ss;
 
-    string fileName = "./DNA-DataBase/DNA-Sequence-";
-    size_t index = 0;
-    for (size_t i = 0; i < totalRandomTests; ++i) {
+    string fileName = "DNA-DataBase/DNA-Sequence-";
+    for (size_t index = 0; index < totalRandomTests; ++index) {
         for (unsigned char x = 0; x < random() % dnaMaxLen + 1; ++x)
             ss << nucleotides[random() % numOfNucleotides];
 
         dnaSequences.emplace_back(DNASequence(ss.str()));
-        dnaSequences[dnaSequences.size() - 1].writeToFile(fileName+to_string(index));
+        dnaSequences[index].writeToFile(fileName+to_string(index));
 
         ss.clear();
         ss.str("");
     }
 
-    for (size_t i = 0; i < totalRandomTests; ++i) {
+    for (size_t index = 0; index < totalRandomTests; ++index) {
         DNASequence dnaSequence = DNASequence::readFromFile(fileName+to_string(index));
-        cout << dnaSequences[i] << "  " << dnaSequence << endl;
-        ASSERT_TRUE(dnaSequences[i] == dnaSequence);
+        ASSERT_TRUE(dnaSequences[index] == dnaSequence);
     }
 }

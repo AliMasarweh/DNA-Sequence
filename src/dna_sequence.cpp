@@ -163,8 +163,10 @@ std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence) {
 
 void DNASequence::writeToFile(const std::string& fileName) const {
     std::ofstream file(fileName);
-    if (file.is_open())
+    if (file.is_open()) {
         file << this->asString();
+    }
+
     file.close();
 }
 
@@ -175,7 +177,6 @@ DNASequence DNASequence::readFromFile(const std::string& fileName) {
     if (file.is_open())
     {
         if(getline (file,line)) {
-            std::cout << "LINE " << line << std::endl;
             ret = line;
         }
         file.close();
