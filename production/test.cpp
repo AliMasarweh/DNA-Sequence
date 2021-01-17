@@ -18,6 +18,14 @@ int main(int argc, char* argv[])
 
 class MyGTestUtil {
 public:
+    static Nucleotide randomNucleotide() {
+
+    }
+    
+    static DNASequence randomDNASequence() {
+
+    }
+
     static const unsigned char s_numOfNucleotides = 4;
     static char s_nucleotides[s_numOfNucleotides];
     static const map<char, char> s_nucPairs;
