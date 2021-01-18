@@ -264,15 +264,6 @@ size_t DNASequence::count(const DNASequence& subSequence) const {
 }
 
 std::vector<size_t> DNASequence::findAll(const DNASequence& subSequence) const {
-    /*std::vector<size_t> ret;
-    size_t i = 0;
-    while((i = this->find(subSequence, i)) != std::string::npos) {
-        ret.push_back(i);
-        ++i;
-    }
-
-    return ret;*/
-
     std::vector<size_t> ret;
 
     std::pair<size_t, size_t> p(-subSequence.length(),0);
