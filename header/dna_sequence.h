@@ -50,6 +50,7 @@ public:
     void writeToFile(const std::string& fileName) const;
 //    DNASequence & readFromFile(const std::string& fileName);
     static DNASequence readFromFile(const std::string& fileName);
+    static bool createDataBaseDir(const std::string& dirName);
 
     DNASequence slice(size_t start, size_t end);
     DNASequence pairSequence() const;
