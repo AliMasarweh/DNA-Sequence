@@ -65,6 +65,8 @@ public:
     std::vector<size_t> findAll(const DNASequence& subSequence) const;
     std::vector<std::pair<size_t, size_t>> findConsensusSequences() const;
 
+    static const std::string s_fileNameExtension;
+
 private:
     std::vector<Nucleotide> m_sequence;
 

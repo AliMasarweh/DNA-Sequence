@@ -6,9 +6,12 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 #include "../header/dna_sequence.h"
 #include "../header/utility/KMPSearcher.h"
+
+const std::string DNASequence::s_fileNameExtension(".rawdna");
 
 DNASequence::DNASequence(const char *cStringSequence) {
     while (*cStringSequence)
@@ -185,6 +188,25 @@ DNASequence DNASequence::readFromFile(const std::string& fileName) {
     return ret;
 }
 
+bool DNASequence::createDataBaseDir(const std::string& dirName) {
+    namespace fs = std::filesystem;
+    if(!fs::create_directory(dirName))
+    {
+        return false;
+    }
+    for(auto& p: fs::directory_iterator (dirName))
+    {
+        if(fs::is_regular_file(p)) {
+            std::string name(p.path().string()) ;
+            size_t index = name.find_last_of('.');
+            if(index != std::string::npos && name.substr(index+1) != DNASequence::s_fileNameExtension) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 DNASequence DNASequence::slice(size_t start, size_t end) {
     char seq[end - start + 1];
