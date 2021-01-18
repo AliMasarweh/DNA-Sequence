@@ -165,7 +165,13 @@ std::ostream & operator<<(std::ostream & os, const DNASequence& dnaSequence) {
 }
 
 void DNASequence::writeToFile(const std::string& fileName) const {
-    std::ofstream file(fileName);
+    size_t index = fileName.find_last_of('.');
+    bool addExtension = false;
+    if(index == std::string::npos && fileName.substr(index+1) != DNASequence::s_fileNameExtension) {
+        addExtension = true;
+    }
+
+    std::ofstream file(fileName + (addExtension? DNASequence::s_fileNameExtension: ""));
     if (file.is_open()) {
         file << this->asString();
     }
@@ -175,8 +181,14 @@ void DNASequence::writeToFile(const std::string& fileName) const {
 
 DNASequence DNASequence::readFromFile(const std::string& fileName) {
     DNASequence ret("A");
+    size_t index = fileName.find_last_of('.');
+    bool addExtension = false;
+    if(index == std::string::npos && fileName.substr(index+1) != DNASequence::s_fileNameExtension) {
+        addExtension = true;
+    }
+
     std::string line;
-    std::ifstream file (fileName);
+    std::ifstream file (fileName + (addExtension? DNASequence::s_fileNameExtension: ""));
     if (file.is_open())
     {
         if(getline (file,line)) {

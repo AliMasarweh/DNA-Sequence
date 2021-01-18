@@ -529,7 +529,9 @@ TEST(DNASequenceAdvancedMethodsTests, WriteToReadFromFilesTest) {
     vector<DNASequence> dnaSequences;
     stringstream ss;
 
-    string fileName = "DNA-DataBase/DNA-Sequence-";
+    string dataBasDir("DNA-DataBase");
+    DNASequence::createDataBaseDir(dataBasDir);
+    string fileName = dataBasDir+"/DNA-Sequence-";
     for (size_t index = 0; index < totalRandomTests; ++index) {
         for (unsigned char x = 0; x < random() % dnaMaxLen + dnaMinLen; ++x)
             ss << GTestUtil::randomNucleotide().asCharacter();
